@@ -2,15 +2,16 @@
 """
 module hymn: Contains Hymn implementation
 """
-from models.base_model import BaseModel
-from sqlalchemy import Column
-from sqlalchemy import DateTime, Integer, String
+from models.base_model import Base, BaseModel, Column
+from sqlalchemy import Integer, String
 
 
-class Hymn(BaseModel):
+class Hymn(BaseModel, Base):
     """
     A hymn
     """
-    hymn_number = 0
-    verses = {}
-    melody = None
+    __tablename__ = 'hymns'
+
+    number = Column('number', Integer)
+    melody_id = Column('melody_id', String(45))
+    verses = []
