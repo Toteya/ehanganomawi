@@ -6,7 +6,7 @@ from os import environ
 
 environ['OMAWI_MYSQL_USER'] = 'omawi_test'
 environ['OMAWI_MYSQL_PWD'] = 'omawi_test_pwd'
-environ['OMAWI_MYSQL_HOST'] = 'local_host'
+environ['OMAWI_MYSQL_HOST'] = 'localhost'
 environ['OMAWI_MYSQL_DB'] = 'omawi_test_db'
 environ['OMAWI_ENV'] = 'test'
 
