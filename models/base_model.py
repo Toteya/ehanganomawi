@@ -29,3 +29,19 @@ class BaseModel:
                     setattr(self, key, value)
             # if kwargs.get('password') and isinstance(self.password, str):
             #     try:
+    
+    def update(self):
+        """ Updates the updated_at attribute
+        """
+        self.updated_at = datetime.now()
+    
+    def to_dict(self):
+        """ Returns a dictionary representation of the BaseModel instance
+        """
+        dict = self.__dict__.copy()
+        dict['created_at'] = datetime.isoformat(self.created_at)
+        dict['updated_at'] = datetime.isoformat(self.updated_at)
+        dict['__class__'] = self.__class__.__name__
+        if dict.get('_sa_instance_state'):
+            del dict['_sa_instance_state']
+        return dict
