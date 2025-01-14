@@ -38,10 +38,10 @@ class BaseModel:
     def to_dict(self):
         """ Returns a dictionary representation of the BaseModel instance
         """
-        dict = self.__dict__.copy()
-        dict['created_at'] = datetime.isoformat(self.created_at)
-        dict['updated_at'] = datetime.isoformat(self.updated_at)
-        dict['__class__'] = self.__class__.__name__
-        if dict.get('_sa_instance_state'):
-            del dict['_sa_instance_state']
-        return dict
+        obj_dict = self.__dict__.copy()
+        obj_dict['created_at'] = datetime.isoformat(self.created_at)
+        obj_dict['updated_at'] = datetime.isoformat(self.updated_at)
+        obj_dict['__class__'] = self.__class__.__name__
+        if obj_dict.get('_sa_instance_state'):
+            del obj_dict['_sa_instance_state']
+        return obj_dict
