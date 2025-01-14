@@ -2,14 +2,17 @@
 """
 module user: Contains user account implementation
 """
-from models.base_model import BaseModel
+from models.base_model import Base, BaseModel
 from sqlalchemy import Column, String
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """
     A user account
     """
-    email = ''
-    password = ''
+    __tablename__ = 'users'
+
+    name = Column('name', String(45))
+    email = Column('email', String(45))
+    password = Column('password', String(45))
     
