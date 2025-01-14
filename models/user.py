@@ -2,8 +2,8 @@
 """
 module user: Contains user account implementation
 """
-from models.base_model import Base, BaseModel
-from sqlalchemy import Column, String
+from models.base_model import Base, BaseModel, Column
+from sqlalchemy import String
 
 
 class User(BaseModel, Base):
