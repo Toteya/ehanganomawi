@@ -24,7 +24,7 @@ class TestBaseModel(unittest.TestCase):
         return super().tearDown()
     
     def test_BaseModel(self):
-        """ Test that a BaseModel instance is created and initialised correctly
+        """ BaseModel instance is created and initialised correctly
         """
         self.assertIsInstance(self.b1.created_at, datetime)
         self.assertEqual(self.b1.created_at, self.b1.updated_at)
@@ -42,17 +42,20 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(bm.created_at, datetime)
         self.assertEqual(bm.created_at, bm.updated_at)
 
-    @unittest.skip('Not implemented yet')
     def test_update(self):
-        """ Tests the update method
+        """ Update method updates the 'updated_at' attribute
         """
         self.assertEqual(self.b1.created_at, self.b1.updated_at)
         self.b1.update()
         self.assertGreater(self.b1.updated_at, self.b1.created_at)
     
-    @unittest.skip('Not implemented yet')
     def test_to_dict(self):
-        """ Tests to_dict method that returns a dictionary representation of
-        BaseModel the instance
+        """ to_dict method returns the correct dictionary representation
+        of the BaseModel instance
         """
-        pass
+        obj_dict = self.b1.to_dict()
+        self.assertIsInstance(obj_dict, dict)
+        self.assertEqual(obj_dict['__class__'], self.b1.__class__.__name__)
+        self.assertNotIn('_sa_instance_state', obj_dict)
+        self.assertIsInstance(obj_dict['created_at'], str)
+        self.assertIsInstance(obj_dict['updated_at'], str)
