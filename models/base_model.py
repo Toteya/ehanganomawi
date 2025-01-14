@@ -3,12 +3,31 @@
 module base_model: contains the BaseModel implementation
 """
 from datetime import datetime
+from sqlalchemy import Column as Col
+from sqlalchemy import DateTime, String
+from sqlalchemy.ext.declarative import declarative_base
 from uuid import uuid4
+
+Base = declarative_base()
+
+
+def Column(*args, **kwargs):
+    """ Adds an argument with a default value 'nullable=False to the
+    sqlalchemy Column class
+    """
+    kwargs.setdefault('nullable', False)
+    return Col(*args, **kwargs)
+
 
 class BaseModel:
     """
     base / parent class upon which all class will be based 
     """
+    id = Column('id', String(45), primary_key=True)
+    created_at = Column('created_at', DateTime, default=datetime.now)
+    updated_at = Column('updated_at', DateTime, default=datetime.now)
+
+
     def __init__(self, **kwargs):
         self.id = str(uuid4())
         self.created_at = datetime.now()
