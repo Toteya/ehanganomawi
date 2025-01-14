@@ -29,5 +29,4 @@ class TestDBStorage(TestCase):
         self.assertEqual(len(storage.all()), 0)
         storage.new(User(email='user1@mail.com', password='myPass123'))
         storage.save()
-        # print(len(storage.all()))
         self.assertEqual(len(storage.all()), 1)
