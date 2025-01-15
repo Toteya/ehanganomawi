@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 
 
 hymn_melody_assoc_table = Table(
-    'hymn_melody',
+    'hymn_melody_assoc_table',
     Base.metadata,
     Col('hymn_id', String(45), ForeignKey('hymns.id'), primary_key=True),
     Col('melody_id', String(45), ForeignKey('melodies.id'), primary_key=True)
