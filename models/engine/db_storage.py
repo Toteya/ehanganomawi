@@ -4,7 +4,11 @@ module db_storage:
 Contains MySQL database storage engine implementation
 """
 from models.base_model import Base
+from models.composer import Composer
+from models.hymn import Hymn
+from models.melody import Melody
 from models.user import User
+from models.verse import Verse
 from os import environ
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -16,7 +20,11 @@ class DBStorage:
     __engine = None
     __session = None
     __classes = {
-        'User': User
+        'Composer': Composer,
+        'Hymn': Hymn,
+        'Melody': Melody,
+        'User': User,
+        'Verse': Verse
     }
 
     def __init__(self):
