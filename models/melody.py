@@ -25,8 +25,6 @@ class Melody(BaseModel, Base):
     filepath = Column('filepath', String(256))
     composer_id = Column('composer_id', String(45), ForeignKey('composers.id'), nullable=True)
 
-    # many-to-many relationship - hymns_melodies
     hymns = relationship('Hymn', secondary='hymn_melody_assoc_table',
                          back_populates='melodies', viewonly=True)
-
     composer = relationship('Composer', back_populates='melodies')
