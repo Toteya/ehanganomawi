@@ -17,12 +17,12 @@ class TestBaseModel(unittest.TestCase):
         self.b1 = BaseModel()
         self.b2 = BaseModel()
         return super().setUp()
-    
+
     def tearDown(self):
         del self.b1
         del self.b2
         return super().tearDown()
-    
+
     def test_BaseModel(self):
         """ BaseModel instance is created and initialised correctly
         """
@@ -48,7 +48,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(self.b1.created_at, self.b1.updated_at)
         self.b1.update()
         self.assertGreater(self.b1.updated_at, self.b1.created_at)
-    
+
     def test_to_dict(self):
         """ to_dict method returns the correct dictionary representation
         of the BaseModel instance

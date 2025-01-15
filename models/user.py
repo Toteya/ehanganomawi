@@ -15,4 +15,3 @@ class User(BaseModel, Base):
     name = Column('name', String(45))
     email = Column('email', String(45))
     password = Column('password', String(45))
-    

@@ -8,6 +8,7 @@ from sqlalchemy import DateTime, String
 from sqlalchemy.orm import DeclarativeBase
 from uuid import uuid4
 
+
 class Base(DeclarativeBase):
     """
     Declarative Base class to be inherited by all mapped classes / models
@@ -25,12 +26,11 @@ def Column(*args, **kwargs):
 
 class BaseModel:
     """
-    base / parent class upon which all class will be based 
+    base / parent class upon which all class will be based
     """
     id = Column('id', String(45), primary_key=True)
     created_at = Column('created_at', DateTime, default=datetime.now)
     updated_at = Column('updated_at', DateTime, default=datetime.now)
-
 
     def __init__(self, **kwargs):
         self.id = str(uuid4())
@@ -52,12 +52,12 @@ class BaseModel:
                     setattr(self, key, value)
             # if kwargs.get('password') and isinstance(self.password, str):
             #     try:
-    
+
     def update(self):
         """ Updates the updated_at attribute
         """
         self.updated_at = datetime.now()
-    
+
     def to_dict(self):
         """ Returns a dictionary representation of the BaseModel instance
         """

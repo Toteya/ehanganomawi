@@ -27,7 +27,7 @@ class TestDBStorage(TestCase):
     @classmethod
     def tearDownClass(cls):
         storage.close()
-    
+
     def test_all(self):
         """ all() method returns all the objects stored in the database
         and if the class is specified, returns only the object from that class
@@ -35,7 +35,7 @@ class TestDBStorage(TestCase):
         self.assertEqual(len(storage.all()), 3)
         self.assertEqual(len(storage.all(User)), 2)
         self.assertEqual(len(storage.all(Composer)), 1)
-    
+
     def test_get(self):
         """ get() returns the correct object as per the given class and id
         """

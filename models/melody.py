@@ -16,14 +16,16 @@ hymn_melody_assoc_table = Table(
     Col('melody_id', String(45), ForeignKey('melodies.id'), primary_key=True)
 )
 
+
 class Melody(BaseModel, Base):
     """
     The melody of a hymn
     """
     __tablename__ = 'melodies'
-    
+
     filepath = Column('filepath', String(256))
-    composer_id = Column('composer_id', String(45), ForeignKey('composers.id'), nullable=True)
+    composer_id = Column('composer_id', String(45), ForeignKey('composers.id'),
+                         nullable=True)
 
     hymns = relationship('Hymn', secondary='hymn_melody_assoc_table',
                          back_populates='melodies', viewonly=True)
