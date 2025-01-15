@@ -58,6 +58,14 @@ class DBStorage:
             obj_dict[key] = obj
         return obj_dict
     
+    def get(self, clss=None, id=None):
+        """ Returns an object based on the given id and class
+        """
+        if not all([clss, id]):
+            return None
+        obj = self.__session.query(clss).filter(clss.id == id).first()
+        return obj
+
     def new(self, obj):
         """ Adds a new object to the current session
         """
@@ -74,14 +82,6 @@ class DBStorage:
         """ Commits all changes from the current session to the database
         """
         self.__session.commit()
-
-    def get(self, clss=None, id=None):
-        """ Returns an object based on the given id and class
-        """
-        if not all([clss, id]):
-            return None
-        obj = self.__session.query(clss).filter(clss.id == id).first()
-        return obj
 
     def load(self):
         """ Loads data from the database and creates a new session
