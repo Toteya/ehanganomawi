@@ -4,8 +4,17 @@ module melody:
 Contains hymn melody implementation
 """
 from models.base_model import Base, BaseModel, Column
-from sqlalchemy import String
+from sqlalchemy import Column as Col
+from sqlalchemy import ForeignKey, String, Table
+from sqlalchemy.orm import relationship
 
+
+hymn_melody_assoc_table = Table(
+    'hymn_melody',
+    Base.metadata,
+    Col('hymn_id', String(45), ForeignKey('hymns.id'), primary_key=True),
+    Col('melody_id', String(45), ForeignKey('melodies.id'), primary_key=True)
+)
 
 class Melody(BaseModel, Base):
     """
@@ -14,5 +23,10 @@ class Melody(BaseModel, Base):
     __tablename__ = 'melodies'
     
     filepath = Column('filepath', String(256))
+    composer_id = Column('composer_id', String(45), ForeignKey('composers.id'), nullable=True)
 
-    # Implement one-to-many relationship with hymn_ids
+    composer = relationship('Composer', back_populates='melodies')
+    
+    # many-to-many relationship - hymns_melodies
+    hymns = relationship('Hymn', secondary='hymn_melody_assoc_table',
+                         back_populates='melodies')

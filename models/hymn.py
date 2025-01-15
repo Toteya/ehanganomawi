@@ -3,7 +3,9 @@
 module hymn: Contains Hymn implementation
 """
 from models.base_model import Base, BaseModel, Column
-from sqlalchemy import Integer, String
+from models.melody import hymn_melody_assoc_table
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class Hymn(BaseModel, Base):
@@ -13,5 +15,8 @@ class Hymn(BaseModel, Base):
     __tablename__ = 'hymns'
 
     number = Column('number', Integer)
-    melody_id = Column('melody_id', String(45))
+    melody_id = Column('melody_id', String(45), ForeignKey('melodies.id'))
     verses = []
+
+    melodies = relationship('Melody', secondary=hymn_melody_assoc_table,
+                            back_populates='hymns')
