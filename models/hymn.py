@@ -15,8 +15,8 @@ class Hymn(BaseModel, Base):
     __tablename__ = 'hymns'
 
     number = Column('number', Integer)
-    melody_id = Column('melody_id', String(45), ForeignKey('melodies.id'))
-    verses = []
+    # melody_id = Column('melody_id', String(45), ForeignKey('melodies.id'))
 
+    verses = relationship('Verse')
     melodies = relationship('Melody', secondary=hymn_melody_assoc_table,
                             back_populates='hymns', viewonly=True)
