@@ -27,6 +27,6 @@ class TestDBStorage(TestCase):
         the commit the changes respectively.
         """
         self.assertEqual(len(storage.all()), 0)
-        storage.new(User(email='user1@mail.com', password='myPass123'))
+        storage.new(User(name='user1', email='user1@mail.com', password='myPass123'))
         storage.save()
         self.assertEqual(len(storage.all()), 1)
