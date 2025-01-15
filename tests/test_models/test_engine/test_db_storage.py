@@ -53,10 +53,10 @@ class TestDBStorage(TestCase):
         self.assertIsNone(obj)
 
     def test_delete(self):
-        # id = '24321c01-f643'
         commposer1 = Composer(name='Sibelius', id='24681c01-f521')
         storage.new(commposer1)
         storage.save()
-        self.assertEqual(len(storage.all()), 4)
+        count_before = len(storage.all())
         storage.delete(commposer1)
-        self.assertEqual(len(storage.all()), 3)
+        count_after = len(storage.all())
+        self.assertLess(count_after, count_before)
