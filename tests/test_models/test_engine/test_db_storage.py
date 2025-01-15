@@ -14,24 +14,49 @@ class TestDBStorage(TestCase):
     Tests DBStorage - MYSQL database storage engine
     """
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         storage.load()
-        return super().setUp()
+        storage.new(User(name='user1', email='user1@mail.com',
+                         password='myPass123', id='3dbec226-b310-4d8c'))
+        storage.new(User(name='user2', email='user2@mail.com',
+                         password='secretpwd', id='3dbec226-b910-4d8c'))
+        storage.new(Composer(name='Mozart', id='24321c01-f643'))
+        storage.save()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
         storage.close()
-        return super().tearDown()
     
     def test_all(self):
-        """ all() method must return all the objects stored in the database
-        Also, new() and save() must add a new object to a session and commits
-        the commit the changes respectively.
+        """ all() method returns all the objects stored in the database
+        and if the class is specified, returns only the object from that class
         """
-        self.assertEqual(len(storage.all()), 0)
-        storage.new(User(name='user1', email='user1@mail.com', password='myPass123'))
-        storage.new(User(name='user2', email='user2@mail.com', password='secretpwd'))
-        storage.new(Composer(name='Mozart'))
-        storage.save()
         self.assertEqual(len(storage.all()), 3)
         self.assertEqual(len(storage.all(User)), 2)
         self.assertEqual(len(storage.all(Composer)), 1)
+    
+    def test_get(self):
+        """ get() returns the correct object as per the given class and id
+        """
+        # Object exist -> return the correct object
+        obj = storage.get(Composer, id='24321c01-f643')
+        self.assertEqual(obj.name, 'Mozart')
+        # Object ID does not exist -> return None
+        obj = storage.get(User, id='24681c01-f521')
+        self.assertIsNone(obj)
+        # No arguments -> return None
+        obj = storage.get()
+        self.assertIsNone(obj)
+        # Only one argument -> return None
+        obj = storage.get(User)
+        self.assertIsNone(obj)
+
+    def test_delete(self):
+        # id = '24321c01-f643'
+        commposer1 = Composer(name='Sibelius', id='24681c01-f521')
+        storage.new(commposer1)
+        storage.save()
+        self.assertEqual(len(storage.all()), 4)
+        storage.delete(commposer1)
+        self.assertEqual(len(storage.all()), 3)
