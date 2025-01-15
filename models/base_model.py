@@ -5,10 +5,14 @@ module base_model: contains the BaseModel implementation
 from datetime import datetime
 from sqlalchemy import Column as Col
 from sqlalchemy import DateTime, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
 from uuid import uuid4
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    """
+    Declarative Base class to be inherited by all mapped classes / models
+    """
+    pass
 
 
 def Column(*args, **kwargs):
