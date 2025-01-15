@@ -5,6 +5,7 @@ Contains unittests for db_storage
 """
 from models import storage
 from models.user import User
+from models.composer import Composer
 from unittest import TestCase
 
 
@@ -28,5 +29,9 @@ class TestDBStorage(TestCase):
         """
         self.assertEqual(len(storage.all()), 0)
         storage.new(User(name='user1', email='user1@mail.com', password='myPass123'))
+        storage.new(User(name='user2', email='user2@mail.com', password='secretpwd'))
+        storage.new(Composer(name='Mozart'))
         storage.save()
-        self.assertEqual(len(storage.all()), 1)
+        self.assertEqual(len(storage.all()), 3)
+        self.assertEqual(len(storage.all(User)), 2)
+        self.assertEqual(len(storage.all(Composer)), 1)
