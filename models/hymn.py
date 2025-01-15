@@ -19,4 +19,4 @@ class Hymn(BaseModel, Base):
     verses = []
 
     melodies = relationship('Melody', secondary=hymn_melody_assoc_table,
-                            back_populates='hymns')
+                            back_populates='hymns', viewonly=True)
