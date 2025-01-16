@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-API index
+API index endpoints
 """
 from flask import jsonify
 from api.v1.views import app_views
@@ -10,4 +10,6 @@ from api.v1.views import app_views
 def status():
     """ Returns the current status of the API
     """
-    return jsonify({"status": "OK"})
+    return jsonify({"Status": "OK"})
+
+# implement stats endpoint
