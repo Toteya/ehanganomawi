@@ -9,10 +9,13 @@ from flask_cors import CORS
 from models import storage
 import os
 
+def create_app():
+    app = Flask(__name__)
+    # app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+    app.register_blueprint(app_views)
+    return app
 
-app = Flask(__name__)
-# app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.register_blueprint(app_views)
+app = create_app()
 cors = CORS(app)
 
 @app.teardown_appcontext
@@ -30,5 +33,5 @@ def not_found(error=None):
 
 if __name__ == '__main__':
     host = os.getenv('OMAWI_API_HOST', '0.0.0.0')
-    port = os.getenv('OMAWI_API_PORT', 5000)
-    app.run(host=host, port=port, threaded=True)
+    port = os.getenv('OMAWI_API_PORT', '5000')
+    app.run(host=host, port=port, threaded=True, debug=True)
