@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Blueprint for Flask API
+Flask API blueprint for non-auth routes
 """
 from flask import Blueprint
 
