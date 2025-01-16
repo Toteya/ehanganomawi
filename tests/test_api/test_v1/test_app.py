@@ -10,7 +10,7 @@ import pytest
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
+os.environ['CONFIG_TYPE'] = 'api.v1.config.TestingConfig'
 app = create_app()
 
 @pytest.fixture
