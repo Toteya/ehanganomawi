@@ -38,7 +38,7 @@ class DBStorage:
 
         self.__engine = create_engine(db_url)
         if environ.get('OMAWI_ENV') == 'test':
-            print("RUNNING UNIT TESTS")
+            print("RUNNING IN TESTING MODE...")
             Base.metadata.drop_all(self.__engine)
 
     def all(self, clss=None):
