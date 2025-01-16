@@ -53,7 +53,7 @@ class TestDBStorage(TestCase):
         self.assertIsNone(obj)
 
     def test_delete(self):
-        commposer1 = Composer(name='Sibelius', id='24681c01-f521')
+        commposer1 = Composer(name='Sibelius', id='5623f420-c341')
         storage.new(commposer1)
         storage.save()
         count_before = len(storage.all())
