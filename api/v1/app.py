@@ -4,7 +4,6 @@ module app:
 Contains Flask API implementation
 """
 from api.v1.views import app_views
-from api.v1.auth import app_auth
 from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
 from models import storage
@@ -18,9 +17,6 @@ def create_app():
     config_type = os.getenv('CONFIG_TYPE', 'api.v1.config.DevelopmentConfig')
     app.config.from_object(config_type)
     
-    # Routes requiring auth
-    app.register_blueprint(app_auth)
-    # Non-auth routes
     app.register_blueprint(app_views)
     
     return app
