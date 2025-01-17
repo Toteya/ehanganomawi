@@ -67,6 +67,14 @@ class DBStorage:
         obj = self.__session.query(clss).filter(clss.id == id).first()
         return obj
 
+    def get_by_filter(self, clss=None, **kwargs):
+        """ Return the first object that matches the given class and arguments
+        """
+        if clss.__name__ not in self.__classes:
+            return None
+        obj = self.__session.query(clss).filter_by(**kwargs).first()
+        return obj
+
     def new(self, obj):
         """ Adds a new object to the current session
         """
