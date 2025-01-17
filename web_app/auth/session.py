@@ -5,6 +5,7 @@ Handles and renders user authentication related routes and templates respectivel
 """
 from web_app.auth import app_auth
 from flask import flash, redirect, render_template, request, url_for
+from flask_login import login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import storage
 from models.user import User
@@ -31,6 +32,8 @@ def login_post():
     if not user or not check_password_hash(user.password, password):
         flash('Please check your login details and try again.')
         return redirect(url_for('app_auth.login'))
+    
+    login_user(user, remember=remember)
 
     return redirect(url_for('app_main.profile'))
 

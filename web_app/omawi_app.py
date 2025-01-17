@@ -3,9 +3,11 @@
 module omawi_app:
 Main Flask app to serve web static content
 """
+from models import storage
 from web_app.main import app_main
 from web_app.auth import app_auth
 from flask import Flask
+from flask_login import LoginManager
 import os
 
 
@@ -16,10 +18,19 @@ def create_app():
 
     config_type = os.getenv('CONFIG_TYPE', 'web_app.config.DevelopmentConfig')
     app.config.from_object(config_type)
-    # Non-auth routes
-    app.register_blueprint(app_main)
-    # Routes requiring auth
-    app.register_blueprint(app_auth)
+
+    app.register_blueprint(app_main) # Non-auth routes
+    app.register_blueprint(app_auth) # Routes requiring auth
+
+    login_manager = LoginManager()
+    login_manager.login_view = 'app_auth.login'
+    login_manager.init_app(app)
+
+    from models.user import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return storage.get(User, user_id)
 
     return app
 
