@@ -5,7 +5,7 @@ Handles and renders user authentication related routes and templates respectivel
 """
 from web_app.auth import app_auth
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import storage
 from models.user import User
@@ -68,7 +68,9 @@ def signup_post():
 
 
 @app_auth.route('/logout')
+@login_required
 def logout():
-    """ Handles logging out
+    """ Logs out the current user / ends the user session
     """
-    return 'Logout'
+    logout_user()
+    return redirect(url_for('app_main.index'))
