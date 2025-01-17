@@ -16,6 +16,29 @@ def login():
     return render_template('login.html')
 
 
+@app_auth.route('/login', methods=['POST'])
+def login_post():
+    """ Validates and logs in the user
+    """
+    email = request.form.get('email')
+    password = request.form.get('password')
+    remember = False
+    if request.form.get('remember'):
+        remember = True
+
+    users = list(storage.all(User).values())
+    user = None
+    for obj in users:
+        if obj.email == email:
+            user = obj
+    
+    if not user or not check_password_hash(user.password, password):
+        flash('Please check your login details and try again.')
+        return redirect(url_for('auth.login'))
+
+    return redirect(url_for('app_main.profile'))
+
+
 @app_auth.route('/signup')
 def signup():
     """ Renders signing up page
