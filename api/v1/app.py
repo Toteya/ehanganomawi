@@ -6,7 +6,7 @@ Contains Flask API implementation
 from api.v1.views import app_views
 from api.v1.auth import app_auth
 from flask import Flask, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from models import storage
 import os
 
@@ -26,7 +26,8 @@ def create_app():
     return app
 
 app = create_app()
-cors = CORS(app)
+CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+# cors = CORS(app)
 
 @app.teardown_appcontext
 def close_session(error=None):
