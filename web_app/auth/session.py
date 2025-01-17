@@ -26,15 +26,11 @@ def login_post():
     if request.form.get('remember'):
         remember = True
 
-    users = list(storage.all(User).values())
-    user = None
-    for obj in users:
-        if obj.email == email:
-            user = obj
+    user = storage.get_by_filter(User, email=email)
     
     if not user or not check_password_hash(user.password, password):
         flash('Please check your login details and try again.')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('app_auth.login'))
 
     return redirect(url_for('app_main.profile'))
 
@@ -54,11 +50,7 @@ def signup_post():
     name = request.form.get('name')
     password = request.form.get('password')
 
-    users = list(storage.all(User).values())
-    user = None
-    for obj in users:
-        if obj.email == email:
-            user = obj
+    user = storage.get_by_filter(User, email=email)
 
     if user:
         flash('Email address already exists')
