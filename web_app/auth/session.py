@@ -3,20 +3,26 @@
 module session:
 Handles and renders user authentication related routes and templates respectively
 """
-from flask import render_template
 from web_app.auth import app_auth
+from flask import render_template, redirect, url_for
+
 
 @app_auth.route('/login')
 def login():
     """ Renders login page
     """
-    return 'Login'
+    return render_template('login.html')
+
 
 @app_auth.route('/signup')
 def signup():
     """ Renders signing up page
     """
-    return 'Signup'
+    return render_template('signup.html')
+
+
+# @app_auth.route('')
+
 
 @app_auth.route('/logout')
 def logout():
