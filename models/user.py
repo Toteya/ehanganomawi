@@ -12,6 +12,6 @@ class User(BaseModel, Base):
     """
     __tablename__ = 'users'
 
-    name = Column('name', String(45))
-    email = Column('email', String(45))
-    password = Column('password', String(45))
+    name = Column('name', String(60))
+    email = Column('email', String(60))
+    password = Column('password', String(255))
