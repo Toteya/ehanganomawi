@@ -35,12 +35,34 @@ def close_session(error=None):
     """
     storage.close()
 
+
+# @app.before_request
+# def authenticate():
+#     """ Authentication before each request
+#     """
+#     pass
+
+
 @app.errorhandler(404)
 def not_found(error=None):
     """ Returns 404 Error - for API resource not found
     """
     return jsonify({'error': 'Not found'}), 404
 
+
+@app.errorhandler(401)
+def unauthorized(error=None):
+    """ Unauthorized request handler - Returns 401 error
+    """
+    return jsonify({'error': 'Unauthorized'}), 401
+
+
+@app.errorhandler(403)
+def forbidden(error=None):
+    """ Forbidden request handler - Returns 403 error
+    """
+    return jsonify({'error': 'Forbidden'}), 403
+    
 
 if __name__ == '__main__':
     # host = os.getenv('OMAWI_API_HOST', '0.0.0.0')
