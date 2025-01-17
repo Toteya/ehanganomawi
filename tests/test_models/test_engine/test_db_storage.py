@@ -51,6 +51,26 @@ class TestDBStorage(TestCase):
         # Only one argument -> return None
         obj = storage.get(User)
         self.assertIsNone(obj)
+    
+    def test_get_by_filter(self):
+        """ get_by_filter() must query and return the first object matching
+        the given class and filter
+        """
+        # Existing user account object m
+        user = storage.get_by_filter(User, email='user1@mail.com')
+        try:
+            self.assertEqual(user.name, 'user1')
+        except AttributeError:
+            self.fail('Test failed: User not found or missing attribute')
+        # Existing composer object
+        composer = storage.get_by_filter(Composer, name='Mozart')
+        try:
+            self.assertEqual(composer.id, '24321c01-f643')
+        except AttributeError:
+            self.fail('Test failed: Composer not found or missing attribute')
+        # Non-existing composer -> must return None
+        composer = storage.get_by_filter(Composer, id='fake_id')
+        self.assertIsNone(composer)
 
     def test_delete(self):
         commposer1 = Composer(name='Sibelius', id='5623f420-c341')
