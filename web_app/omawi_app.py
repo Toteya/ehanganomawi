@@ -20,7 +20,7 @@ def create_app():
     app.config.from_object(config_type)
 
     app.register_blueprint(app_main) # Non-auth routes
-    app.register_blueprint(app_auth) # Routes requiring auth
+    app.register_blueprint(app_auth) # Routes related to user authentication
 
     login_manager = LoginManager()
     login_manager.login_view = 'app_auth.login'
