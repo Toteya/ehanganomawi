@@ -4,15 +4,25 @@ module app:
 Contains Flask API implementation
 """
 from api.v1.views import app_views
+from api.v1.auth import app_auth
 from flask import Flask, jsonify
 from flask_cors import CORS
 from models import storage
 import os
 
 def create_app():
+    """ Creates and initialises the API app
+    """
     app = Flask(__name__)
-    # app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+
+    config_type = os.getenv('CONFIG_TYPE', 'api.v1.config.DevelopmentConfig')
+    app.config.from_object(config_type)
+    
+    # Routes requiring auth
+    app.register_blueprint(app_auth)
+    # Non-auth routes
     app.register_blueprint(app_views)
+    
     return app
 
 app = create_app()
@@ -32,6 +42,8 @@ def not_found(error=None):
 
 
 if __name__ == '__main__':
-    host = os.getenv('OMAWI_API_HOST', '0.0.0.0')
-    port = os.getenv('OMAWI_API_PORT', '5000')
+    # host = os.getenv('OMAWI_API_HOST', '0.0.0.0')
+    # port = os.getenv('OMAWI_API_PORT', '5001')
+    host = app.config['HOST']
+    port = app.config['PORT']
     app.run(host=host, port=port, threaded=True, debug=True)
