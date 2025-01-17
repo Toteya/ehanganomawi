@@ -4,8 +4,10 @@ module session:
 Handles and renders user authentication related routes and templates respectively
 """
 from web_app.auth import app_auth
-from flask import render_template, redirect, url_for
-
+from flask import flash, redirect, render_template, request, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import storage
+from models.user import User
 
 @app_auth.route('/login')
 def login():
@@ -21,7 +23,30 @@ def signup():
     return render_template('signup.html')
 
 
-# @app_auth.route('')
+@app_auth.route('/signup', methods=['POST'])
+def signup_post():
+    """ Validates and adds user to the database
+    """
+    email = request.form.get('email')
+    name = request.form.get('name')
+    password = request.form.get('password')
+
+    users = list(storage.all(User).values())
+    user = None
+    for obj in users:
+        if obj.email == email:
+            user = obj
+
+    if user:
+        flash('Email address already exists')
+        return redirect(url_for('app_auth.signup'))
+    
+    new_user = User(email=email, name=name,
+                    password=generate_password_hash(password, method='scrypt'))
+    storage.new(new_user)
+    storage.save()
+    
+    return redirect(url_for('app_auth.login'))
 
 
 @app_auth.route('/logout')
