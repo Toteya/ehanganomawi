@@ -14,9 +14,8 @@ def create_app():
     """
     app = Flask(__name__)
 
-    config_type = os.getenv('CONFIG_TYPE', 'api.v1.config.DevelopmentConfig')
+    config_type = os.getenv('CONFIG_TYPE', 'web_app.config.DevelopmentConfig')
     app.config.from_object(config_type)
-
     # Non-auth routes
     app.register_blueprint(app_main)
     # Routes requiring auth
@@ -27,7 +26,6 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    host = app.config['HOST', '0.0.0.0']
-    port = app.config['PORT', '5000']
-    app.run()
+    host = app.config['HOST']
+    port = app.config['PORT']
     app.run(host=host, port=port, threaded=True, debug=True)
