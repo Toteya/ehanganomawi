@@ -15,4 +15,4 @@ class Verse(BaseModel, Base):
 
     hymn_id = Column('hymn_id', String(45), ForeignKey('hymns.id'))
     number = Column('number', Integer)
-    lyrics = Column('lyrics', String(512))
+    lyrics = Column('lyrics', String(1028))
