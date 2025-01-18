@@ -7,4 +7,3 @@ from flask import Blueprint
 app_main = Blueprint('app_main', __name__)
 
 from web_app.main.main import *
-

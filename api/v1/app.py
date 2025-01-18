@@ -9,6 +9,7 @@ from flask_cors import CORS, cross_origin
 from models import storage
 import os
 
+
 def create_app():
     """ Creates and initialises the API app
     """
@@ -16,14 +17,16 @@ def create_app():
 
     config_type = os.getenv('CONFIG_TYPE', 'api.v1.config.DevelopmentConfig')
     app.config.from_object(config_type)
-    
+
     app.register_blueprint(app_views)
-    
+
     return app
+
 
 app = create_app()
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 # cors = CORS(app)
+
 
 @app.teardown_appcontext
 def close_session(error=None):
@@ -58,7 +61,7 @@ def forbidden(error=None):
     """ Forbidden request handler - Returns 403 error
     """
     return jsonify({'error': 'Forbidden'}), 403
-    
+
 
 if __name__ == '__main__':
     # host = os.getenv('OMAWI_API_HOST', '0.0.0.0')

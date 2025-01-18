@@ -19,8 +19,8 @@ def create_app():
     config_type = os.getenv('CONFIG_TYPE', 'web_app.config.DevelopmentConfig')
     app.config.from_object(config_type)
 
-    app.register_blueprint(app_main) # Non-auth routes
-    app.register_blueprint(app_auth) # Routes related to user authentication
+    app.register_blueprint(app_main)  # Non-auth routes
+    app.register_blueprint(app_auth)  # Routes related to user authentication
 
     login_manager = LoginManager()
     login_manager.login_view = 'app_auth.login'
@@ -33,6 +33,7 @@ def create_app():
         return storage.get(User, user_id)
 
     return app
+
 
 app = create_app()
 

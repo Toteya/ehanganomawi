@@ -13,6 +13,7 @@ def status():
     """
     return jsonify({"Status": "OK"})
 
+
 @app_views.route('/stats', strict_slashes=False)
 def stats():
     """ Returns statistics about all the existing objects in the daatabase

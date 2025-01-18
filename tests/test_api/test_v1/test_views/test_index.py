@@ -14,6 +14,7 @@ import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
+
 @pytest.fixture(scope='module')
 def create_objects():
     """ Creates and saves objects to the test database
@@ -22,7 +23,7 @@ def create_objects():
     storage.new(Composer(name='Bach'))
     storage.new(Hymn(number=23))
     storage.new(User(name='Mike', email='mike@mail.com', password='myPass123'))
-    storage.new(User(name='Marty', email='marty@mail.com', password='secretPWD21'))
+    storage.new(User(name='Marty', email='marty@oal.com', password='scrtPWD2'))
     storage.save()
     yield
     objs = storage.all().values()
@@ -37,6 +38,7 @@ def test_status(client):
     response = client.get('/api/v1/status')
     assert response.status_code == 200
     assert response.json == {'Status': 'OK'}
+
 
 def test_stats(client, create_objects):
     """ Test that the '/stats' route returns a summary of all existing objects

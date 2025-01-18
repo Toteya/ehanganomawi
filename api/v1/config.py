@@ -3,6 +3,8 @@
 module config:
 Flask configuration file
 """
+
+
 class Config:
     TESTING = False
     DEBUG = True

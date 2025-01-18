@@ -12,6 +12,7 @@ from models.composer import Composer
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
+
 @pytest.fixture(scope='module')
 def new_composer():
     composer1 = Composer(name='Sibelius')
@@ -20,6 +21,7 @@ def new_composer():
     yield
     storage.delete(composer1)
     storage.save()
+
 
 def test_composers(client, new_composer):
     """ Tests that composers route returns all existing composers

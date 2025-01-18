@@ -51,7 +51,7 @@ class TestDBStorage(TestCase):
         # Only one argument -> return None
         obj = storage.get(User)
         self.assertIsNone(obj)
-    
+
     def test_get_by_filter(self):
         """ get_by_filter() must query and return the first object matching
         the given class and filter

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 module session:
-Handles and renders user authentication related routes and templates respectively
+Handles and renders user authentication related routes and templates
+respectively
 """
 from web_app.auth import app_auth
 from flask import flash, redirect, render_template, request, url_for
@@ -9,6 +10,7 @@ from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import storage
 from models.user import User
+
 
 @app_auth.route('/login')
 def login():
@@ -28,11 +30,11 @@ def login_post():
         remember = True
 
     user = storage.get_by_filter(User, email=email)
-    
+
     if not user or not check_password_hash(user.password, password):
         flash('Please check your login details and try again.')
         return redirect(url_for('app_auth.login'))
-    
+
     login_user(user, remember=remember)
 
     return redirect(url_for('app_main.profile'))
@@ -58,12 +60,12 @@ def signup_post():
     if user:
         flash('Email address already exists')
         return redirect(url_for('app_auth.signup'))
-    
+
     new_user = User(email=email, name=name,
                     password=generate_password_hash(password, method='scrypt'))
     storage.new(new_user)
     storage.save()
-    
+
     return redirect(url_for('app_auth.login'))
 
 

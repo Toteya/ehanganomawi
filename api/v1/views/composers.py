@@ -8,6 +8,7 @@ from flask import jsonify
 from models import storage
 from models.composer import Composer
 
+
 @app_views.route('/composers', strict_slashes=False)
 def composer():
     """ Returns all the composers in the database
