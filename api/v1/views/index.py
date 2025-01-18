@@ -20,7 +20,13 @@ def stats():
     objs = storage.all()
     objs_stats = {}
     for key in objs.keys():
-        clss = key.split('.')[0] + 's'
+        clss = key.split('.')[0]
+        # Pluralise classs name e.g. User -> Users, Melody -> Melodies
+        if clss[-1] == 'y':
+            clss = clss[:-1] + 'ies'
+        else:
+            clss += 's'
+        # Store object count
         if clss not in objs_stats:
             objs_stats[clss] = 1
         else:
