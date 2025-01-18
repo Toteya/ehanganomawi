@@ -4,17 +4,17 @@ module test_composers:
 Contains pytests for API views - composers endpoints
 """
 from test_app import client
-import sys
-import os
-import pytest
 from models import storage
 from models.composer import Composer
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import os
+import pytest
+import sys
 
 
 @pytest.fixture(scope='module')
 def new_composer():
+    """ Creates a composer object for testing
+    """
     composer1 = Composer(name='Sibelius')
     storage.new(composer1)
     storage.save()
@@ -23,7 +23,7 @@ def new_composer():
     storage.save()
 
 
-def test_composers(client, new_composer):
+def test_get_composers(client, new_composer):
     """ Tests that composers route returns all existing composers
     """
     response = client.get('/api/v1/composers')
