@@ -14,7 +14,7 @@ class Hymn(BaseModel, Base):
     """
     __tablename__ = 'hymns'
 
-    number = Column('number', Integer)
+    number = Column('number', Integer, unique=True)
     # melody_id = Column('melody_id', String(45), ForeignKey('melodies.id'))
 
     verses = relationship('Verse')
