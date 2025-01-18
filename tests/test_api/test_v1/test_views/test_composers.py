@@ -6,9 +6,7 @@ Contains pytests for API views - composers endpoints
 from test_app import client
 from models import storage
 from models.composer import Composer
-import os
 import pytest
-import sys
 
 
 @pytest.fixture(scope='module')
