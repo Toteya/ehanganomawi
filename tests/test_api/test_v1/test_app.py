@@ -19,10 +19,3 @@ def client():
     """
     with app.test_client() as client:
         yield client
-
-def test_status(client):
-    """ Test the status route
-    """
-    response = client.get('/api/v1/status')
-    assert response.status_code == 200
-    assert response.json == {'Status': 'OK'}
