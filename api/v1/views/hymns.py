@@ -9,13 +9,14 @@ from models import storage
 from models.hymn import Hymn
 
 
-@app_views.route('/hymns', strict_slashes=False)
+@app_views.route('/hymns', methods=['GET'], strict_slashes=False)
 def get_hymns():
     """ Returns all the hymns
     """
     hymns = storage.all(Hymn).values()
     hymns_list = [hymn.to_dict() for hymn in hymns]
     return jsonify(hymns_list)
+
 
 @app_views.route('/hymns/<hymn_id>', methods=['GET'], strict_slashes=False)
 def get_hymn(hymn_id):
@@ -25,6 +26,7 @@ def get_hymn(hymn_id):
     if not hymn:
         abort(404)
     return (hymn.to_dict())
+
 
 @app_views.route('/hymns', methods=['POST'], strict_slashes=False)
 def post_hymn():
