@@ -15,7 +15,7 @@ def status():
 
 @app_views.route('/stats', strict_slashes=False)
 def stats():
-    """ Returns statistic about all the existing objects in the daatabase
+    """ Returns statistics about all the existing objects in the daatabase
     """
     objs = storage.all()
     objs_stats = {}
