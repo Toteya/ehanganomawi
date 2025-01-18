@@ -18,8 +18,21 @@ def get_verse(verse_id):
     verse = storage.get(Verse, verse_id)
     if not verse:
         abort(404)
-    
+
     return jsonify(verse.to_dict())
+
+
+@app_views.route('/verses/<verse_id>', methods=['DELETE'],
+                 strict_slashes=False)
+def delete_verse(verse_id):
+    """ Deletes the verse that matches the given ID
+    """
+    verse = storage.get(Verse, verse_id)
+    if not verse:
+        abort(404)
+
+    storage.delete(verse)
+    return jsonify({'Success': 'Verse deleted'})
 
 
 @app_views.route('/hymns/<hymn_id>/verses', methods=['POST'],
@@ -37,7 +50,7 @@ def post_verse(hymn_id):
     if not lyrics:
         abort(400, description='Lyrics missing')
     if any([verse.number == number for verse in hymn.verses]):
-        err_message = f'A verse number {number} already exists for this hymn.'
+        err_message = f'Verse number {number} already exists for this hymn.'
         abort(400, description=err_message)
 
     verse = Verse(hymn_id=hymn_id, number=number, lyrics=lyrics)
@@ -45,4 +58,3 @@ def post_verse(hymn_id):
     storage.save()
 
     return jsonify({'Success': 'Verse added'})
-
