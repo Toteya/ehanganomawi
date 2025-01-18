@@ -43,7 +43,6 @@ def test_stats(client, create_objects):
     """
     response = client.get('/api/v1/stats')
     assert response.status_code == 200
-    assert 'Composers' in response.json
     assert response.json.get('Composers') == 2
     assert response.json.get('Hymns') == 1
     assert response.json.get('Users') == 2
