@@ -10,7 +10,7 @@ from models.composer import Composer
 
 
 @app_views.route('/composers', strict_slashes=False)
-def composer():
+def get_composers():
     """ Returns all the composers in the database
     """
     composers = storage.all(Composer).values()
