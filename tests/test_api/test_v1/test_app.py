@@ -20,3 +20,9 @@ def client():
     """
     with app.test_client() as client:
         yield client
+
+def test_not_found(client):
+    """ Tests that non-existing route url returns a 404 error
+    """
+    response = client.get('/api/v1/wrong_route')
+    assert response.status_code == 404
