@@ -13,8 +13,9 @@ class Verse(BaseModel, Base):
     """
     __tablename__ = 'verses'
 
-    hymn_id = Column('hymn_id', String(45), ForeignKey('hymns.id', ondelete='CASCADE'))
+    hymn_id = Column('hymn_id', String(45), ForeignKey('hymns.id',
+                                                       ondelete='CASCADE'))
     number = Column('number', Integer)
     lyrics = Column('lyrics', String(1028))
 
-    __mapper_args__ = { 'confirm_deleted_rows': False }
+    __mapper_args__ = {'confirm_deleted_rows': False}
