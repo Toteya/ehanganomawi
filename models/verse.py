@@ -5,7 +5,6 @@ Contains hymn verses implementation
 """
 from models.base_model import Base, BaseModel, Column
 from sqlalchemy import ForeignKey, Integer, String
-from sqlalchemy.orm import backref, relationship
 
 
 class Verse(BaseModel, Base):
