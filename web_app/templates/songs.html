@@ -1,28 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="audio-player">
-        <audio id="soprano" controls>
-            <source src="{{ url_for('static', filename='audio/soprano.mp3') }}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <audio id="alto" controls>
-            <source src="{{ url_for('static', filename='audio/alto.mp3') }}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <audio id="tenor" controls>
-            <source src="{{ url_for('static', filename='audio/tenor.mp3') }}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <audio id="bass" controls>
-            <source src="{{ url_for('static', filename='audio/bass.mp3') }}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+  <section class="sectio">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-4">
+          <!-- media player -->
+          <div class="audio-player">
+              <audio id="soprano" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/soprano.mp3') }}" type="audio/mpeg"> -->
+                  Your browser does not support the audio element.
+              </audio>
+              <audio id="alto" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/alto.mp3') }}" type="audio/mpeg"> -->
+                  Your browser does not support the audio element.
+              </audio>
+              <audio id="tenor" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/tenor.mp3') }}" type="audio/mpeg"> -->
+                  Your browser does not support the audio element.
+              </audio>
+              <audio id="bass" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/bass.mp3') }}" type="audio/mpeg"> -->
+                  Your browser does not support the audio element.
+              </audio>
+          </div>
+          <div class="list">
+            <button class="button" id="mute-all">Mute All</button>
+            <button class="button" id="unmute-all">Unmute All</button>
+            <button class="button" id="mute-soprano">Mute Soprano</button>
+            <button class="button" id="mute-alto">Mute Alto</button>
+            <button class="button" id="mute-tenor">Mute Tenor</button>
+            <button class="button" id="mute-bass">Mute Bass</button>
+          </div>
+        </div>
+        <div class="column is-8">
+          <!-- lyrics -->
+          <!-- {% for verse in verses %}
+            <p class="container">{{ verse.number }}. {{ verse.lyrics }}</p>
+          {% endfor %} -->
+            <p class="mb-4">1. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa quaerat exercitationem quo consectetur dolores maxime fugiat voluptatum officiis expedita neque!</p>
+            <br>
+            <p class="mb-4">2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus molestiae suscipit ipsa dolore architecto animi magnam consequatur minus aliquam ad.</p>
+            <br>
+        </div>
+      </div>
     </div>
-    <button id="play-all">Play</button>
-    <button id="pause-all">Pause</button>
-    <button id="mute-soprano">Mute Soprano</button>
-    <button id="mute-alto">Mute Alto</button>
-    <button id="mute-tenor">Mute Tenor</button>
-    <button id="mute-bass">Mute Bass</button>
+  </section>
 {% endblock %}
