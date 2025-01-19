@@ -10,7 +10,7 @@ import pytest
 
 
 @pytest.fixture(scope='module')
-def new_composer():
+def create_composer():
     """ Creates a composer object for testing
     """
     composer1 = Composer(name='Sibelius')
@@ -21,7 +21,7 @@ def new_composer():
     storage.save()
 
 
-def test_get_composers(client, new_composer):
+def test_get_composers(client, create_composer):
     """ Tests that composers route returns all existing composers
     """
     response = client.get('/api/v1/composers')
