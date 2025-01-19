@@ -35,6 +35,19 @@ def delete_verse(verse_id):
     return jsonify({'Success': 'Verse deleted'})
 
 
+@app_views.route('/hymns/<hymn_id>/verses', methods=['GET'],
+                 strict_slashes=False)
+def get_verses(hymn_id):
+    """ Returns all the verses from the given hymn
+    """
+    hymn = storage.get(Hymn, hymn_id)
+    if not hymn:
+        abort(404)
+
+    verses = [verse.to_dict() for verse in hymn.verses]
+    return jsonify(verses)
+
+
 @app_views.route('/hymns/<hymn_id>/verses', methods=['POST'],
                  strict_slashes=False)
 def post_verse(hymn_id):
@@ -47,6 +60,10 @@ def post_verse(hymn_id):
     lyrics = request.form.get('lyrics')
     if not number:
         abort(400, description="Verse number missing")
+    try:
+        number = int(number)
+    except ValueError:
+        abort(400, description='number must be an integer')
     if not lyrics:
         abort(400, description='Lyrics missing')
     if any([verse.number == number for verse in hymn.verses]):
@@ -56,5 +73,6 @@ def post_verse(hymn_id):
     verse = Verse(hymn_id=hymn_id, number=number, lyrics=lyrics)
     storage.new(verse)
     storage.save()
+    storage.close()
 
     return jsonify({'Success': 'Verse added'})
