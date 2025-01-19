@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="audio-player">
+        <audio id="soprano" controls>
+            <source src="{{ url_for('static', filename='audio/soprano.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="alto" controls>
+            <source src="{{ url_for('static', filename='audio/alto.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="tenor" controls>
+            <source src="{{ url_for('static', filename='audio/tenor.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <audio id="bass" controls>
+            <source src="{{ url_for('static', filename='audio/bass.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    <button id="play-all">Play</button>
+    <button id="pause-all">Pause</button>
+    <button id="mute-soprano">Mute Soprano</button>
+    <button id="mute-alto">Mute Alto</button>
+    <button id="mute-tenor">Mute Tenor</button>
+    <button id="mute-bass">Mute Bass</button>
+{% endblock %}
