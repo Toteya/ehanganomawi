@@ -12,6 +12,7 @@ from models.verse import Verse
 from os import environ
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.exc import InvalidRequestError
 
 
 class DBStorage:
@@ -91,6 +92,15 @@ class DBStorage:
         """ Commits all changes from the current session to the database
         """
         self.__session.commit()
+
+    def expire(self, obj=None):
+        """ Expires an object to ensure that the next it is accessed the most
+        the most up-to-date version is loaded
+        """
+        try:
+            self.__session.expire(obj)
+        except InvalidRequestError as e:
+            print(f"Error: {e}")
 
     def load(self):
         """ Loads data from the database and creates a new session
