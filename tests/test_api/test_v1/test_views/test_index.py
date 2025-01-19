@@ -5,7 +5,7 @@ Contains pytests for API views - index endpoints
 """
 from models import storage
 from models.composer import Composer
-from models.hymn import Hymn
+from models.song import Song
 from models.user import User
 from test_app import client
 import pytest
@@ -21,7 +21,7 @@ def create_objects():
     """
     storage.new(Composer(name='Chopin'))
     storage.new(Composer(name='Bach'))
-    storage.new(Hymn(number=23))
+    storage.new(Song(number=23))
     storage.new(User(name='Mike', email='mike@mail.com', password='myPass123'))
     storage.new(User(name='Marty', email='marty@oal.com', password='scrtPWD2'))
     storage.save()
@@ -46,5 +46,5 @@ def test_stats(client, create_objects):
     response = client.get('/api/v1/stats')
     assert response.status_code == 200
     assert response.json.get('Composers') == 2
-    assert response.json.get('Hymns') == 1
+    assert response.json.get('Songs') == 1
     assert response.json.get('Users') == 2

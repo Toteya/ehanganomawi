@@ -11,6 +11,6 @@ class Playlist(BaseModel):
     """
     name = ''
     user_id = ''
-    hymns = []
+    songs = []
 
-    # Set up many-to-many relationship with hymn_numbers
+    # Set up many-to-many relationship with song_numbers

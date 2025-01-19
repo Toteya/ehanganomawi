@@ -1,2 +1,2 @@
 # Omawi
-Oshiwambo hymn melodies and lyrics
+Oshiwambo songs melodies and lyrics

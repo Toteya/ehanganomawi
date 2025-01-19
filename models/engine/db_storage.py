@@ -5,7 +5,7 @@ Contains MySQL database storage engine implementation
 """
 from models.base_model import Base
 from models.composer import Composer
-from models.hymn import Hymn
+from models.song import Song
 from models.melody import Melody
 from models.user import User
 from models.verse import Verse
@@ -23,7 +23,7 @@ class DBStorage:
     __session = None
     __classes = {
         'Composer': Composer,
-        'Hymn': Hymn,
+        'Song': Song,
         'Melody': Melody,
         'User': User,
         'Verse': Verse
