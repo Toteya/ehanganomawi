@@ -2,3 +2,4 @@ __pycache__
 *.sh
 *.sql
 dev_tools
+w3c_validator.py
