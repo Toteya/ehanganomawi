@@ -21,3 +21,11 @@ def profile():
     """ Renders profile page
     """
     return render_template('profile.html', name=current_user.name)
+
+@app_main.route('/songs')
+@login_required
+def songs():
+    """ Renders the songs page
+    """
+    # load songs from database
+    return render_template('songs.html')
