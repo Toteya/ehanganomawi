@@ -3,6 +3,10 @@ $(document).ready(() => {
   let isPlaying = false;
 
   const playPause = $('#play-pause');
+  const volumeControl = $('#volume-control');
+  const progressBar = $('#progress-bar');
+  const currentTime = $('#current-time');
+  const totalTime = $('#total-time');
 
   const soprano = $('#soprano')[0];
   const alto = $('#alto')[0];
@@ -20,6 +24,12 @@ $(document).ready(() => {
     {'audioItem': tenor, 'muteButton': muteTenor},
     {'audioItem': bass, 'muteButton': muteBass},
   ];
+
+  // control playing and pausing
+  $('#play-pause').click(() => {
+      playPauseAll();
+      playPause.removeClass('fa-play');
+  });
 
   const playPauseAll = () => {
     const playPromise = soprano.play();
@@ -53,13 +63,22 @@ $(document).ready(() => {
     }
   }
 
-  $('#play-pause').click(() => {
-    console.log('PLAY CLICKED!')
-      playPauseAll();
-      playPause.removeClass('fa-play');
-  });
+  // volume control
+  volumeControl.on('input propertychange', function() {
+    console.log('VOLUME ADJUSTED!');
+    adjustVolume($(this).val());
+  })
 
+  const adjustVolume = (value) => {
+    soprano.volume = value;
+    // alto.volume = value;
+    // tenor.volume = value;
+    // bass.volume = value;
+  }
 
+  
+
+  // control muting of individual or all tracks
   const toggleMute = (audioItem, muteButton) => {
     const icon = muteButton.find('i');
     const span = muteButton.find('span.icon')
