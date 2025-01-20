@@ -4,10 +4,10 @@ $(document).ready(() => {
 
   const playPause = $('#play-pause');
 
-  const soprano = $('#soprano');
-  const alto = $('#alto');
-  const tenor = $('#tenor');
-  const bass = $('#bass');
+  const soprano = $('#soprano')[0];
+  const alto = $('#alto')[0];
+  const tenor = $('#tenor')[0];
+  const bass = $('#bass')[0];
 
   const muteSoprano = $('#mute-soprano')
   const muteAlto = $('#mute-alto')
@@ -22,7 +22,7 @@ $(document).ready(() => {
   ];
 
   const playPauseAll = () => {
-    const playPromise = soprano.get(0).play();
+    const playPromise = soprano.play();
     const icon = playPause.find('i');
     if (!isPlaying) {
       playPromise
@@ -41,7 +41,7 @@ $(document).ready(() => {
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            soprano.get(0).pause();
+            soprano.pause();
             icon.removeClass('fa-pause');
             icon.addClass('fa-play');
             isPlaying = false;
