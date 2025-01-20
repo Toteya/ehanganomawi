@@ -1,5 +1,9 @@
 // Handles the interactive functionality of the music player / songs page
 $(document).ready(() => {
+  let isPlaying = false;
+
+  const playPause = $('#play-pause');
+
   const soprano = $('#soprano');
   const alto = $('#alto');
   const tenor = $('#tenor');
@@ -17,25 +21,67 @@ $(document).ready(() => {
     {'audioItem': bass, 'muteButton': muteBass},
   ];
 
-  const toggleMute = (audioItem, muteButton) => {
-    const icon = muteButton.find('i');
-    if (audioItem.muted) {
-      unmuteAudio(audioItem, icon);
+  const playPauseAll = () => {
+    const playPromise = soprano.get(0).play();
+    const icon = playPause.find('i');
+    if (!isPlaying) {
+      playPromise
+        .then(() => {
+          icon.removeClass('fa-play');
+          icon.addClass('fa-pause');
+          isPlaying = true;
+        })
+        .catch((err) => {
+          console.log('Playback failed:', err);
+          icon.removeClass('fa-pause');
+          icon.addClass('fa-play');
+          isPlaying = false;
+        });
     } else {
-      muteAudio(audioItem, icon);
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            soprano.get(0).pause();
+            icon.removeClass('fa-pause');
+            icon.addClass('fa-play');
+            isPlaying = false;
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      }
     }
   }
 
-  const muteAudio = (audioItem, icon) => {
+  $('#play-pause').click(() => {
+    console.log('PLAY CLICKED!')
+      playPauseAll();
+      playPause.removeClass('fa-play');
+  });
+
+
+  const toggleMute = (audioItem, muteButton) => {
+    const icon = muteButton.find('i');
+    const span = muteButton.find('span.icon')
+    if (audioItem.muted) {
+      unmuteAudio(audioItem, icon, span);
+    } else {
+      muteAudio(audioItem, icon, span);
+    }
+  }
+
+  const muteAudio = (audioItem, icon, span) => {
     audioItem.muted = true;
     icon.removeClass('fa-volume-high');
     icon.addClass('fa-volume-xmark');
+    span.addClass('has-text-danger')
   }
 
-  const unmuteAudio = (audioItem, icon) => {
+  const unmuteAudio = (audioItem, icon, span) => {
     audioItem.muted = false;
     icon.removeClass('fa-volume-xmark');
     icon.addClass('fa-volume-high');
+    span.removeClass('has-text-danger')
   }
 
   $('#mute-soprano').click(() => {
@@ -57,28 +103,18 @@ $(document).ready(() => {
   $('#unmute-all').click(() => {
     for (const item of items) {
       const icon = item.muteButton.find('i');
-      unmuteAudio(item.audioItem, icon);
+      const span = item.muteButton.find('span.icon')
+      unmuteAudio(item.audioItem, icon, span);
     }
   });
 
   $('#mute-all').click(() => {
     for (const item of items) {
       const icon = item.muteButton.find('i');
-      muteAudio(item.audioItem, icon);
+      const span = item.muteButton.find('span.icon')
+      muteAudio(item.audioItem, icon, span);
     }
   });
 
-  $('#play').click(() => {
-    soprano.play();
-    alto.play();
-    tenor.play();
-    bass.play();
-  });
 
-  $('#pause').click(() => {
-    soprano.pause();
-    alto.pause();
-    tenor.pause();
-    bass.pause();
-  });
 });

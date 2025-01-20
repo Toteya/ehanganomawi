@@ -8,7 +8,7 @@
           <!-- media player -->
           <div class="audio-player">
               <audio id="soprano" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/soprano.mp3') }}" type="audio/mpeg"> -->
+                  <source src="{{ url_for('static', filename='assets/audio/sample.mp3') }}" type="audio/mpeg">
                   Your browser does not support the audio element.
               </audio>
               <audio id="alto" controls>
@@ -23,6 +23,20 @@
                   <!-- <source src="{{ url_for('static', filename='audio/bass.mp3') }}" type="audio/mpeg"> -->
                   Your browser does not support the audio element.
               </audio>
+              <div class="controls">
+                <button class="button" id="play-pause">
+                  <span>
+                    <i class="fas fa-play"></i>
+                    <!-- <i class="fa-solid fa-pause"></i> -->
+                  </span>
+                </button>
+                <input type="range" id="volumn-control" min="0" max="1" step="0.01" value="0.5">
+              </div>
+              <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+              </div>
+              <div id="current-time">0:00</div>
+              <div id="total-time">0:00</div>
           </div>
           <div class="container">
             <button class="button" id="mute-all">
