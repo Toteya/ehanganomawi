@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <section class="sectio">
+  <section class="section">
     <div class="container">
       <div class="columns">
         <div class="column is-4">
@@ -24,13 +24,43 @@
                   Your browser does not support the audio element.
               </audio>
           </div>
-          <div class="list">
-            <button class="button" id="mute-all">Mute All</button>
-            <button class="button" id="unmute-all">Unmute All</button>
-            <button class="button" id="mute-soprano">Mute Soprano</button>
-            <button class="button" id="mute-alto">Mute Alto</button>
-            <button class="button" id="mute-tenor">Mute Tenor</button>
-            <button class="button" id="mute-bass">Mute Bass</button>
+          <div class="container">
+            <button class="button" id="mute-all">
+              <span class="icon">
+                <i class="fas fa-volume-xmark"></i>
+              </span>
+              <span>All</span>
+            </button>
+            <button class="button" id="unmute-all">
+              <span class="icon">
+                <i class="fas fa-volume-high"></i>
+              </span>
+              <span>All</span>
+            </button>
+            <button class="button" id="mute-soprano">
+              <span class="icon">
+                <i class="fas fa-volume-high"></i>
+              </span>
+              <span>Soprano</span>
+            </button>
+            <button class="button" id="mute-alto">
+              <span class="icon">
+                <i class="fas fa-volume-high"></i>
+              </span>
+              <span>Alto</span>
+            </button>
+            <button class="button" id="mute-tenor">
+              <span class="icon">
+                <i class="fas fa-volume-high"></i>
+              </span>
+              <span>Tenor</span>
+            </button>
+            <button class="button" id="mute-bass">
+              <span class="icon">
+                <i class="fas fa-volume-high"></i>
+              </span>
+              <span>Bass</span>
+            </button>
           </div>
         </div>
         <div class="column is-8">
