@@ -1,4 +1,5 @@
 // Handles the interactive functionality of the music player / songs page
+import { audioContext, audioBuffers } from '../scripts/audio_mixer.js';
 $(document).ready(() => {
   let isPlaying = false;
 
@@ -175,6 +176,5 @@ $(document).ready(() => {
       muteAudio(item.audioItem, icon, span);
     }
   });
-
 
 });
