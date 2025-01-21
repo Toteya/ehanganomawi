@@ -1,6 +1,10 @@
-export let audioContext;
-export let audioBuffers;
+// Creates audio context using Web Audio API to allow for audio manipulation
+
 $(document).ready(() => {
+  let audioContext;
+  let audioBuffers;
+  let gainNodes;
+
   const audioSources = [
     $('#soprano').find('source'),
     $('#alto').find('source'),
@@ -23,14 +27,15 @@ $(document).ready(() => {
       const dataBuffers = await Promise.all(
         paths.map( (path) => fetch( path ).then( (res) => res.arrayBuffer() ) )
       );
-      // decode audio data
+      // create audio buffers / decode the audio data
       audioBuffers = await Promise.all(
         dataBuffers.map( (buf) => audioContext.decodeAudioData( buf ) )
       );
-   })();
+      // gain nodes to allow mute/unmute individual tracks
+      gainNodes = audioBuffers.map(() => audioContext.createGain());
+    })();
   }
 
-  // Handle user gesture to enable the AudioContext
   const playButton = $("#play-mixer");
   playButton.click(() => {
     audioContext.resume()
