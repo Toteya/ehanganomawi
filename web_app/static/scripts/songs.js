@@ -3,7 +3,7 @@
 $(document).ready(() => {
   let isPlaying = false;
   let audSourceIsConnected = false;
-  
+
   // Create audio context with Web Audio API to allow for audio manupulation
   let audioContext;
   let audioBuffers;
@@ -120,10 +120,9 @@ $(document).ready(() => {
   })
 
   const adjustVolume = (value) => {
-    soprano.volume = value;
-    alto.volume = value;
-    tenor.volume = value;
-    bass.volume = value;
+    gainNodes.forEach((node) => {
+      node.gain.value = value;
+    })
   }
 
   // progress bar
