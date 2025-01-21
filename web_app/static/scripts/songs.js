@@ -3,6 +3,7 @@
 $(document).ready(() => {
   let isPlaying = false;
   let audSourceIsConnected = false;
+  
   // Create audio context with Web Audio API to allow for audio manupulation
   let audioContext;
   let audioBuffers;
@@ -39,26 +40,6 @@ $(document).ready(() => {
   }
 
   const playPause = $('#play-pause');
-  // Handle user gesture to enable the AudioContext
-  // const playButton = $("#play-mixer");
-  // playButton.click(() => {
-  playPause.click(() => {
-    if(!audSourceIsConnected) {
-      audioContext.resume().then(() => {
-        const current_time = audioContext.currentTime;
-        audioBuffers.forEach( (buf, index) => {
-          const source = audioContext.createBufferSource();
-          source.buffer = buf;
-          source.connect(gainNodes[index]);
-          gainNodes[index].connect(audioContext.destination);
-          // start all audios after 0.5s just to be safe (to ensure they're in sync)
-          source.start( current_time + 0.5 );
-        });
-        audSourceIsConnected = true;
-      })
-    }
-  });
-
 
   const volumeControl = $('#volume-control');
   const progressBar = $('#progress-bar')[0];
@@ -82,11 +63,30 @@ $(document).ready(() => {
     {'audioItem': bass, 'muteButton': muteBass},
   ];
 
+
   // control playing and pausing
-  $('#play-pause').click(() => {
-      if (audSourceIsConnected) {
-        playPauseAll();
-      }
+  playPause.click(() => {
+    if(audSourceIsConnected) {
+      // normal play-pause control
+      playPauseAll();
+    } else {
+      // initialise audioContext, decode audio and create buffer source(s)
+      audioContext.resume().then(() => {
+        const current_time = audioContext.currentTime;
+        audioBuffers.forEach( (buf, index) => {
+          const source = audioContext.createBufferSource();
+          source.buffer = buf;
+          source.connect(gainNodes[index]);
+          gainNodes[index].connect(audioContext.destination);
+          // start all audios after 0.5s just to be safe (to ensure they're in sync)
+          source.start( current_time + 0.5 );
+        });
+        const icon = playPause.find('i');
+        icon.removeClass('fa-play');
+        icon.addClass('fa-pause');
+        audSourceIsConnected = true;
+      })
+    }
   });
 
   const playPauseAll = () => {
