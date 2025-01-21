@@ -93,11 +93,23 @@ $(document).ready(() => {
     const totalMinutes = Math.floor(duration / 60);
     const totalSeconds = Math.floor(duration % 60);
 
-    currentTimeDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
-    totalTimeDisplay.textContent = `${totalMinutes}:${totalSeconds < 10 ? '0' : ''}${totalSeconds}`;
+    setTimeDisplay(currentTimeDisplay, currentSeconds, currentMinutes);
+    setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
 
     const progress = (currentTime / duration) * 100;
     progressBar.value = progress;
+  })
+
+  const setTimeDisplay = (timeDisplay, seconds, minutes) => {
+    timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
+  // initialise song duration when page loads and metadata is ready
+  $('#soprano').on('loadedmetadata', () => {
+    const duration = soprano.duration;
+    const totalMinutes = Math.floor(duration / 60);
+    const totalSeconds = Math.floor(duration % 60);
+    setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
   })
 
   $('#progress-bar').on('input propertychange', function() {
