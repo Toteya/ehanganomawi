@@ -1,6 +1,58 @@
 // Handles the interactive functionality of the music player / songs page
-import { audioContext, audioBuffers } from '../scripts/audio_mixer.js';
+
 $(document).ready(() => {
+  // Create audio context with Web Audio API to allow for audio manupulation
+  let audioContext;
+  let audioBuffers;
+  let gainNodes;
+
+  const audioSources = [
+    $('#soprano').find('source'),
+    $('#alto').find('source'),
+    $('#tenor').find('source'),
+    $('#bass').find('source'),
+  ];
+
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext());
+  } catch (error) {
+    window.alert('Your browser does not support the Web Audio API.');
+  }
+
+  if (audioContext !== undefined) {
+    // Implementation
+    (async() => {
+      const paths = audioSources.map((audioSource) => audioSource.attr('src'));
+      // fetch data for each audio source file
+      const dataBuffers = await Promise.all(
+        paths.map( (path) => fetch( path ).then( (res) => res.arrayBuffer() ) )
+      );
+      // create audio buffers / decode the audio data
+      audioBuffers = await Promise.all(
+        dataBuffers.map( (buf) => audioContext.decodeAudioData( buf ) )
+      );
+      // gain nodes to allow mute/unmute individual tracks
+      gainNodes = audioBuffers.map(() => audioContext.createGain());
+    })();
+  }
+
+  // Handle user gesture to enable the AudioContext
+  const playButton = $("#play-mixer");
+  playButton.click(() => {
+    audioContext.resume()
+      .then(() => {
+        const current_time = audioContext.currentTime;
+        audioBuffers.forEach( (buf, index) => {
+          const source = audioContext.createBufferSource();
+          source.buffer = buf;
+          source.connect(gainNodes[index]);
+          gainNodes[index].connect(audioContext.destination);
+          // start all audios after 0.5s just to be safe (to ensure they're in sync)
+          source.start( current_time + 0.5 );
+        } );
+      })
+  });
+
   let isPlaying = false;
 
   const playPause = $('#play-pause');
@@ -121,60 +173,69 @@ $(document).ready(() => {
   });
 
   // control muting of individual or all tracks
-  const toggleMute = (audioItem, muteButton) => {
+  const toggleMute = (audioItem, muteButton, gain) => {
     const icon = muteButton.find('i');
     const span = muteButton.find('span.icon')
-    if (audioItem.muted) {
-      unmuteAudio(audioItem, icon, span);
+    // if (audioItem.muted) {
+    if (!gain.value) {
+      unmuteAudio(audioItem, icon, span, gain);
     } else {
-      muteAudio(audioItem, icon, span);
+      muteAudio(audioItem, icon, span, gain);
     }
   }
 
-  const muteAudio = (audioItem, icon, span) => {
+  const muteAudio = (audioItem, icon, span, gain) => {
     audioItem.muted = true;
+    gain.value = 0;
     icon.removeClass('fa-volume-high');
     icon.addClass('fa-volume-xmark');
     span.addClass('has-text-danger')
   }
 
-  const unmuteAudio = (audioItem, icon, span) => {
+  const unmuteAudio = (audioItem, icon, span, gain) => {
     audioItem.muted = false;
+    gain.value = 1;
     icon.removeClass('fa-volume-xmark');
     icon.addClass('fa-volume-high');
     span.removeClass('has-text-danger')
   }
 
   $('#mute-soprano').click(() => {
-    toggleMute(soprano, muteSoprano);
+    const gain = gainNodes[0].gain
+    toggleMute(soprano, muteSoprano, gain);
   });
 
   $('#mute-alto').click(() => {
-    toggleMute(alto, muteAlto);
+    const gain = gainNodes[1].gain;
+    toggleMute(alto, muteAlto, gain);
   });
 
   $('#mute-tenor').click(() => {
-    toggleMute(tenor, muteTenor);
+    const gain = gainNodes[2].gain;
+    toggleMute(tenor, muteTenor, gain);
   });
 
   $('#mute-bass').click(() => {
-    toggleMute(bass, muteBass);
+    const gain = gainNodes[3].gain;
+    toggleMute(bass, muteBass, gain);
   });
 
   $('#unmute-all').click(() => {
-    for (const item of items) {
+    items.forEach((item, index) => {
+      const gain = gainNodes[index].gain;
       const icon = item.muteButton.find('i');
       const span = item.muteButton.find('span.icon')
-      unmuteAudio(item.audioItem, icon, span);
-    }
+      unmuteAudio(item.audioItem, icon, span, gain);
+    });
   });
 
   $('#mute-all').click(() => {
-    for (const item of items) {
+    items.forEach((item, index) => {
+      const gain = gainNodes[index].gain;
       const icon = item.muteButton.find('i');
       const span = item.muteButton.find('span.icon')
-      muteAudio(item.audioItem, icon, span);
-    }
+      muteAudio(item.audioItem, icon, span, gain);
+    });
   });
 
 });
