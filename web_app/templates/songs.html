@@ -9,20 +9,23 @@
           <div id="audio-player" class="box">
             <div class="container" style="display: none;">
               <audio id="soprano" controls>
-                    <source src="{{ url_for('static', filename='assets/audio/sample.mp3') }}" type="audio/mpeg">
-                    Your browser does not support the audio element.
+                <source src="{{ url_for('static', filename='assets/audio/soprano.m4a') }}" type="audio/mpeg">
+                Your browser does not support the audio element.
               </audio>
               <audio id="alto" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/alto.mp2') }}" type="audio/mpeg"> -->
-                  Your browser does not support the audio element.
+                <!-- <source src="{{ url_for('static', filename='audio/alto.mp2') }}" type="audio/mpeg"> -->
+                <source src="{{ url_for('static', filename='assets/audio/alto.m4a') }}" type="audio/mpeg">
+                Your browser does not support the audio element.
               </audio>
               <audio id="tenor" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/tenor.mp2') }}" type="audio/mpeg"> -->
-                  Your browser does not support the audio element.
+                <!-- <source src="{{ url_for('static', filename='audio/tenor.mp2') }}" type="audio/mpeg"> -->
+                <source src="{{ url_for('static', filename='assets/audio/tenor.m4a') }}" type="audio/mpeg">
+                Your browser does not support the audio element.
               </audio>
               <audio id="bass" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/bass.mp2') }}" type="audio/mpeg"> -->
-                  Your browser does not support the audio element.
+                <!-- <source src="{{ url_for('static', filename='audio/bass.mp2') }}" type="audio/mpeg"> -->
+                <source src="{{ url_for('static', filename='assets/audio/bass.m4a') }}" type="audio/mpeg">
+                Your browser does not support the audio element.
               </audio>
             </div>
             <div class="container" style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
@@ -31,6 +34,11 @@
                   <button class="button is-small" id="play-pause" style="margin-right: 1.5rem;">
                     <span>
                       <i class="fas fa-play"></i>
+                    </span>
+                  </button>
+                  <button class="button is-small" id="play-mixer" style="margin-right: 1.5rem;">
+                    <span>
+                      <i class="fas fa-music"></i>
                     </span>
                   </button>
                   <label for="volume-control">
