@@ -80,6 +80,7 @@ $(document).ready(() => {
           gainNodes[index].connect(audioContext.destination);
           // start all audios after 0.5s just to be safe (to ensure they're in sync)
           source.start( current_time + 0.5 );
+          requestAnimationFrame(updateProgressBar);
         });
         const icon = playPause.find('i');
         icon.removeClass('fa-play');
@@ -126,9 +127,10 @@ $(document).ready(() => {
   }
 
   // progress bar
-  $('#soprano').on('timeupdate', function() {
-    const currentTime = soprano.currentTime;
-    const duration = soprano.duration;
+  // $('#soprano').on('timeupdate', function() {
+  function updateProgressBar() {
+    const currentTime = audioContext.currentTime;
+    const duration = audioBuffers[0].duration;
 
     const currentMinutes = Math.floor(currentTime / 60);
     const currentSeconds = Math.floor(currentTime % 60);
@@ -140,7 +142,10 @@ $(document).ready(() => {
 
     const progress = (currentTime / duration) * 100;
     progressBar.value = progress;
-  })
+    if (currentTime < duration) {
+      requestAnimationFrame(updateProgressBar);
+    }
+  }
 
   const setTimeDisplay = (timeDisplay, seconds, minutes) => {
     timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
