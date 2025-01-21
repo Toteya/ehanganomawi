@@ -1,6 +1,8 @@
 // Handles the interactive functionality of the music player / songs page
 
 $(document).ready(() => {
+  let isPlaying = false;
+  let audSourceIsConnected = false;
   // Create audio context with Web Audio API to allow for audio manupulation
   let audioContext;
   let audioBuffers;
@@ -36,11 +38,13 @@ $(document).ready(() => {
     })();
   }
 
+  const playPause = $('#play-pause');
   // Handle user gesture to enable the AudioContext
-  const playButton = $("#play-mixer");
-  playButton.click(() => {
-    audioContext.resume()
-      .then(() => {
+  // const playButton = $("#play-mixer");
+  // playButton.click(() => {
+  playPause.click(() => {
+    if(!audSourceIsConnected) {
+      audioContext.resume().then(() => {
         const current_time = audioContext.currentTime;
         audioBuffers.forEach( (buf, index) => {
           const source = audioContext.createBufferSource();
@@ -49,13 +53,13 @@ $(document).ready(() => {
           gainNodes[index].connect(audioContext.destination);
           // start all audios after 0.5s just to be safe (to ensure they're in sync)
           source.start( current_time + 0.5 );
-        } );
+        });
+        audSourceIsConnected = true;
       })
+    }
   });
 
-  let isPlaying = false;
 
-  const playPause = $('#play-pause');
   const volumeControl = $('#volume-control');
   const progressBar = $('#progress-bar')[0];
   const currentTimeDisplay = $('#current-time')[0];
@@ -85,35 +89,49 @@ $(document).ready(() => {
   });
 
   const playPauseAll = () => {
-    const playPromise = soprano.play();
     const icon = playPause.find('i');
-    if (!isPlaying) {
-      playPromise
-        .then(() => {
-          icon.removeClass('fa-play');
-          icon.addClass('fa-pause');
-          isPlaying = true;
-        })
-        .catch((err) => {
-          console.log('Playback failed:', err);
-          icon.removeClass('fa-pause');
-          icon.addClass('fa-play');
-          isPlaying = false;
-        });
-    } else {
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            soprano.pause();
-            icon.removeClass('fa-pause');
-            icon.addClass('fa-play');
-            isPlaying = false;
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      }
+    if (audioContext.state === 'running') {
+      audioContext.suspend().then(() => {
+        icon.removeClass('fa-pause');
+        icon.addClass('fa-play');
+        isPlaying = false;
+      })
+    } else if (audioContext.state === 'suspended') {
+      audioContext.resume().then(() => {
+        icon.removeClass('fa-play');
+        icon.addClass('fa-pause');
+        isPlaying = false;
+      })
     }
+    // const playPromise = soprano.play();
+    // const icon = playPause.find('i');
+    // if (!isPlaying) {
+    //   playPromise
+    //     .then(() => {
+    //       icon.removeClass('fa-play');
+    //       icon.addClass('fa-pause');
+    //       isPlaying = true;
+    //     })
+    //     .catch((err) => {
+    //       console.log('Playback failed:', err);
+    //       icon.removeClass('fa-pause');
+    //       icon.addClass('fa-play');
+    //       isPlaying = false;
+    //     });
+    // } else {
+    //   if (playPromise !== undefined) {
+    //     playPromise
+    //       .then(() => {
+    //         soprano.pause();
+    //         icon.removeClass('fa-pause');
+    //         icon.addClass('fa-play');
+    //         isPlaying = false;
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       })
+    //   }
+    // }
   }
 
   $('#soprano').on('ended', function() {
