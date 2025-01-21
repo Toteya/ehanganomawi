@@ -63,6 +63,14 @@ $(document).ready(() => {
     }
   }
 
+  $('#soprano').on('ended', function() {
+    isPlaying = false;
+    const icon = playPause.find('i');
+    icon.removeClass('fa-pause');
+    icon.addClass('fa-play');
+    soprano.currentTime = 0;
+  })
+
   // volume control
   volumeControl.on('input propertychange', function() {
     adjustVolume($(this).val());
@@ -91,6 +99,13 @@ $(document).ready(() => {
     const progress = (currentTime / duration) * 100;
     progressBar.value = progress;
   })
+
+  $('#progress-bar').on('input propertychange', function() {
+    const progress = $(this).val();
+    const duration = soprano.duration;
+    const currentTime = (duration * progress) / 100;
+    soprano.currentTime = currentTime;
+  });
 
   // control muting of individual or all tracks
   const toggleMute = (audioItem, muteButton) => {
