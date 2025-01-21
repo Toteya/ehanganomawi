@@ -84,8 +84,9 @@ $(document).ready(() => {
 
   // control playing and pausing
   $('#play-pause').click(() => {
-      playPauseAll();
-      playPause.removeClass('fa-play');
+      if (audSourceIsConnected) {
+        playPauseAll();
+      }
   });
 
   const playPauseAll = () => {
@@ -103,35 +104,6 @@ $(document).ready(() => {
         isPlaying = false;
       })
     }
-    // const playPromise = soprano.play();
-    // const icon = playPause.find('i');
-    // if (!isPlaying) {
-    //   playPromise
-    //     .then(() => {
-    //       icon.removeClass('fa-play');
-    //       icon.addClass('fa-pause');
-    //       isPlaying = true;
-    //     })
-    //     .catch((err) => {
-    //       console.log('Playback failed:', err);
-    //       icon.removeClass('fa-pause');
-    //       icon.addClass('fa-play');
-    //       isPlaying = false;
-    //     });
-    // } else {
-    //   if (playPromise !== undefined) {
-    //     playPromise
-    //       .then(() => {
-    //         soprano.pause();
-    //         icon.removeClass('fa-pause');
-    //         icon.addClass('fa-play');
-    //         isPlaying = false;
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       })
-    //   }
-    // }
   }
 
   $('#soprano').on('ended', function() {
