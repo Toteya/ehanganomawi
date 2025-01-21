@@ -4,9 +4,9 @@ $(document).ready(() => {
 
   const playPause = $('#play-pause');
   const volumeControl = $('#volume-control');
-  const progressBar = $('#progress-bar');
-  const currentTime = $('#current-time');
-  const totalTime = $('#total-time');
+  const progressBar = $('#progress-bar')[0];
+  const currentTimeDisplay = $('#current-time')[0];
+  const totalTimeDisplay = $('#total-time')[0];
 
   const soprano = $('#soprano')[0];
   const alto = $('#alto')[0];
@@ -65,18 +65,32 @@ $(document).ready(() => {
 
   // volume control
   volumeControl.on('input propertychange', function() {
-    console.log('VOLUME ADJUSTED!');
     adjustVolume($(this).val());
   })
 
   const adjustVolume = (value) => {
     soprano.volume = value;
-    // alto.volume = value;
-    // tenor.volume = value;
-    // bass.volume = value;
+    alto.volume = value;
+    tenor.volume = value;
+    bass.volume = value;
   }
 
-  
+  // progress bar
+  $('#soprano').on('timeupdate', function() {
+    const currentTime = soprano.currentTime;
+    const duration = soprano.duration;
+
+    const currentMinutes = Math.floor(currentTime / 60);
+    const currentSeconds = Math.floor(currentTime % 60);
+    const totalMinutes = Math.floor(duration / 60);
+    const totalSeconds = Math.floor(duration % 60);
+
+    currentTimeDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+    totalTimeDisplay.textContent = `${totalMinutes}:${totalSeconds < 10 ? '0' : ''}${totalSeconds}`;
+
+    const progress = (currentTime / duration) * 100;
+    progressBar.value = progress;
+  })
 
   // control muting of individual or all tracks
   const toggleMute = (audioItem, muteButton) => {
