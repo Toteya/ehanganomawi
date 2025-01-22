@@ -32,6 +32,7 @@ def create_verses():
     storage.delete(verse1)
     storage.delete(verse2)
     storage.save()
+    storage.close()
 
 
 def test_get_verse(client, create_songs,  create_verses):

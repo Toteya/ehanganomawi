@@ -22,6 +22,7 @@ def create_songs():
     storage.delete(song34)
     storage.delete(song22)
     storage.save()
+    storage.close()
 
 
 def test_get_songs(client, create_songs):

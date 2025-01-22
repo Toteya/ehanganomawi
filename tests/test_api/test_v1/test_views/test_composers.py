@@ -19,6 +19,7 @@ def create_composer():
     yield
     storage.delete(composer1)
     storage.save()
+    storage.close()
 
 
 def test_get_composers(client, create_composer):

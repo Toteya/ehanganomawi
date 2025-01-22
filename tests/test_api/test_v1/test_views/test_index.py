@@ -30,6 +30,7 @@ def create_objects():
     for obj in objs:
         storage.delete(obj)
     storage.save()
+    storage.close()
 
 
 def test_status(client):
