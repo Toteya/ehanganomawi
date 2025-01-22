@@ -1,15 +1,14 @@
 // Handles the interactive functionality of the music player / songs page
 
 $(document).ready(() => {
-  let isPlaying = false;
-  // let audSourceIsConnected = false;
-  // let offsetStartTime = 0;
-
   // Create audio context with Web Audio API to allow for audio manupulation
   let audioContext;
   let audioBuffers;
   let gainNodes;
   let sources = [];
+  let startTime;
+  let offsetTime = 0;
+  let reqID;
 
   const audioSources = [
     $('#soprano').find('source'),
@@ -74,17 +73,19 @@ $(document).ready(() => {
     } else {
       // initialise audioContext, decode audio and create buffer source(s)
       audioContext.resume().then(() => {
-        const current_time = audioContext.currentTime;
-        startPlayback(current_time, 0);
+        offsetTime = 0;
+        startPlayback();
         const icon = playPause.find('i');
         icon.removeClass('fa-play');
         icon.addClass('fa-pause');
-        // audSourceIsConnected = true;
       })
     }
   });
 
-  const startPlayback = (current_time, offsetTime) => {
+  const startPlayback = () => {
+    const currentTime = audioContext.currentTime;
+    // startTime = currentTime - offsetTime;
+    startTime = currentTime;
     audioBuffers.forEach( (buf, index) => {
       const source = audioContext.createBufferSource();
       source.buffer = buf;
@@ -92,14 +93,12 @@ $(document).ready(() => {
       gainNodes[index].connect(audioContext.destination);
       sources.push(source);
       $(source).on('ended', () => {
-        console.log('Playback finished!')
-        // remove source from array
+        // remove source from array / clear the sources array
         sources = sources.filter(s => s !== source);
         resetPlayerUI();
       })
       // start all audios after 0.5s just to be safe (to ensure they're in sync)
-      source.start( current_time + 0.5, offsetTime );
-      // offsetStartTime = 0;
+      source.start(currentTime + 0.5, offsetTime);
       requestAnimationFrame(updateProgressBar);
     });
   }
@@ -107,13 +106,16 @@ $(document).ready(() => {
   const playPauseAll = () => {
     const icon = playPause.find('i');
     if (audioContext.state === 'running') {
+      // PAUSE
       audioContext.suspend().then(() => {
         icon.removeClass('fa-pause');
         icon.addClass('fa-play');
         isPlaying = false;
       })
     } else if (audioContext.state === 'suspended') {
+      // PLAY
       audioContext.resume().then(() => {
+        requestAnimationFrame(updateProgressBar);
         icon.removeClass('fa-play');
         icon.addClass('fa-pause');
         isPlaying = false;
@@ -142,22 +144,21 @@ $(document).ready(() => {
   }
 
   function updateProgressBar() {
-    const currentTime = audioContext.currentTime;
     const duration = audioBuffers[0].duration;
+    const progressTime = audioContext.currentTime - startTime + offsetTime;
 
-    const currentMinutes = Math.floor(currentTime / 60);
-    const currentSeconds = Math.floor(currentTime % 60);
+    const currentMinutes = Math.floor(progressTime / 60);
+    const currentSeconds = Math.floor(progressTime % 60);
     const totalMinutes = Math.floor(duration / 60);
     const totalSeconds = Math.floor(duration % 60);
 
     setTimeDisplay(currentTimeDisplay, currentSeconds, currentMinutes);
     setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
 
-    const progress = (currentTime / duration) * 100;
+    const progress = (progressTime / duration) * 100;
     progressBar.value = progress;
-    if (currentTime < duration) {
+    if (progressTime < duration && audioContext.state === 'running') {
       requestAnimationFrame(updateProgressBar);
-    } else {
     }
   }
 
@@ -169,29 +170,27 @@ $(document).ready(() => {
     if (sources.length === 0) {
       return;
     }
+    // cancelAnimationFrame(reqID);
     sources.forEach((source) => source.stop());
     const progress = $(this).val();
     const duration = audioBuffers[0].duration;
-    const newTime = (duration * progress) / 100;
-    const current_time = audioContext.currentTime;
-
-    startPlayback(current_time, newTime);
-
+    offsetTime = (duration * progress) / 100;
+    startPlayback(offsetTime);
   });
 
-  // initialise player UI
-  // $('#soprano').on('loadedmetadata', () => {
+  // Initialise the PlayerUI / icons, progress bar, time
   const resetPlayerUI = () => {
-    // const duration = soprano.duration;
-    let duration
+    let duration;
     try {
       duration = audioBuffers[0].duration;
     } catch {
       duration = 0;
     }
     const totalMinutes = Math.floor(duration / 60);
-    const totalSeconds = Math.floor(duration % 60);
+    const totalSeconds = Math.floor(duration % 60);    
+    setTimeDisplay(currentTimeDisplay, 0, 0);
     setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
+    progressBar.value = 0;
 
     const icon = playPause.find('i');
     icon.removeClass('fa-pause');
