@@ -47,23 +47,12 @@ $(document).ready(() => {
   const currentTimeDisplay = $('#current-time')[0];
   const totalTimeDisplay = $('#total-time')[0];
 
-  const soprano = $('#soprano')[0];
-  const alto = $('#alto')[0];
-  const tenor = $('#tenor')[0];
-  const bass = $('#bass')[0];
-
   const muteSoprano = $('#mute-soprano')
   const muteAlto = $('#mute-alto')
   const muteTenor = $('#mute-tenor')
   const muteBass = $('#mute-bass')
 
-  const items = [
-    {'audioItem': soprano, 'muteButton': muteSoprano},
-    {'audioItem': alto, 'muteButton': muteAlto},
-    {'audioItem': tenor, 'muteButton': muteTenor},
-    {'audioItem': bass, 'muteButton': muteBass},
-  ];
-
+  const muteButtons = [muteSoprano, muteAlto, muteTenor, muteBass]
 
   // control playing and pausing
   playPause.click(() => {
@@ -122,14 +111,6 @@ $(document).ready(() => {
     }
   }
 
-
-  $('#soprano').on('ended', function() {
-    isPlaying = false;
-    const icon = playPause.find('i');
-    icon.removeClass('fa-pause');
-    icon.addClass('fa-play');
-    soprano.currentTime = 0;
-  })
 
   // volume control
   volumeControl.on('input propertychange', function() {
@@ -198,27 +179,24 @@ $(document).ready(() => {
   resetPlayerUI();
 
   // control muting of individual or all tracks
-  const toggleMute = (audioItem, muteButton, gain) => {
+  const toggleMute = (muteButton, gain) => {
     const icon = muteButton.find('i');
     const span = muteButton.find('span.icon')
-    // if (audioItem.muted) {
     if (!gain.value) {
-      unmuteAudio(audioItem, icon, span, gain);
+      unmuteAudio(icon, span, gain);
     } else {
-      muteAudio(audioItem, icon, span, gain);
+      muteAudio(icon, span, gain);
     }
   }
 
-  const muteAudio = (audioItem, icon, span, gain) => {
-    audioItem.muted = true;
+  const muteAudio = (icon, span, gain) => {
     gain.value = 0;
     icon.removeClass('fa-volume-high');
     icon.addClass('fa-volume-xmark');
     span.addClass('has-text-danger')
   }
 
-  const unmuteAudio = (audioItem, icon, span, gain) => {
-    audioItem.muted = false;
+  const unmuteAudio = (icon, span, gain) => {
     gain.value = 1;
     icon.removeClass('fa-volume-xmark');
     icon.addClass('fa-volume-high');
@@ -227,39 +205,39 @@ $(document).ready(() => {
 
   $('#mute-soprano').click(() => {
     const gain = gainNodes[0].gain
-    toggleMute(soprano, muteSoprano, gain);
+    toggleMute(muteSoprano, gain);
   });
 
   $('#mute-alto').click(() => {
     const gain = gainNodes[1].gain;
-    toggleMute(alto, muteAlto, gain);
+    toggleMute(muteAlto, gain);
   });
 
   $('#mute-tenor').click(() => {
     const gain = gainNodes[2].gain;
-    toggleMute(tenor, muteTenor, gain);
+    toggleMute(muteTenor, gain);
   });
 
   $('#mute-bass').click(() => {
     const gain = gainNodes[3].gain;
-    toggleMute(bass, muteBass, gain);
+    toggleMute(muteBass, gain);
   });
 
   $('#unmute-all').click(() => {
-    items.forEach((item, index) => {
+    muteButtons.forEach((muteButton, index) => {
       const gain = gainNodes[index].gain;
-      const icon = item.muteButton.find('i');
-      const span = item.muteButton.find('span.icon')
-      unmuteAudio(item.audioItem, icon, span, gain);
+      const icon = muteButton.find('i');
+      const span = muteButton.find('span.icon')
+      unmuteAudio(icon, span, gain);
     });
   });
 
   $('#mute-all').click(() => {
-    items.forEach((item, index) => {
+    muteButtons.forEach((muteButton, index) => {
       const gain = gainNodes[index].gain;
-      const icon = item.muteButton.find('i');
-      const span = item.muteButton.find('span.icon')
-      muteAudio(item.audioItem, icon, span, gain);
+      const icon = muteButton.find('i');
+      const span = muteButton.find('span.icon')
+      muteAudio(icon, span, gain);
     });
   });
 });
