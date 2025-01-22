@@ -6,7 +6,8 @@
       <!-- <div class="columns"> -->
         <!-- <div class="column is-5"> -->
           <!-- media player -->
-          <div id="audio-player" class="box">
+          <div id="audio-player" class="box m-4">
+            <p class="mb-4">Press PLAY to learn the melody</p>
             <div class="container" style="display: none;">
               <audio id="soprano" controls>
                 <source src="{{ url_for('static', filename='assets/audio/soprano.m4a') }}" type="audio/mpeg">
@@ -102,15 +103,14 @@
           </div>
           </div>
         <!-- </div> -->
-        <div class="container is-9">
+        <div class="container px-6 has-text-white">
+          <h4 class="has-text-weight-semibold">LYRICS</h4>
           <!-- lyrics -->
           <!-- {% for verse in verses %}
-            <p class="container">{{ verse.number }}. {{ verse.lyrics }}</p>
+            <p class="mb-5">{{ verse.number }}. {{ verse.lyrics }}</p>
           {% endfor %} -->
           <p class="mb-5">1. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa quaerat exercitationem quo consectetur dolores maxime fugiat voluptatum officiis expedita neque!</p>
-          <br>
           <p class="mb-5">2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus molestiae suscipit ipsa dolore architecto animi magnam consequatur minus aliquam ad.</p>
-          <br>
         </div>
       <!-- </div> -->
     </div>
