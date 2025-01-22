@@ -63,7 +63,7 @@ def post_verse(song_id):
     try:
         number = int(number)
     except ValueError:
-        abort(400, description='number must be an integer')
+        abort(400, description='Number must be an integer')
     if not lyrics:
         abort(400, description='Lyrics missing')
     if any([verse.number == number for verse in song.verses]):
