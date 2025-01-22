@@ -30,16 +30,21 @@ def get_song(song_id):
 
 @app_views.route('/songs', methods=['POST'], strict_slashes=False)
 def post_song():
-    """ Creates a new song
+    """ Creates and saves new song
     """
+    title = request.form.get('title')
     number = request.form.get('number')
+    if not title:
+        abort(400, description='Title is missing')
+    try:
+        number = int(number)
+    except ValueError:
+        abort(400, description='Number must be an integer')
+
     song = Song(number=number)
     storage.new(song)
     storage.save()
-
-# @app_views.route('/songs/<song_id>/verses', methods=['POST'],
-#                  strict_slashes=False)
-# def post_verse
+    storage.close()
 
 
 # @app_views.route('composer/<composer_id>/songs', methods=['GET'],
