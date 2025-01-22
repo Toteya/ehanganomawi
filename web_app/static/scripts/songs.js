@@ -2,12 +2,14 @@
 
 $(document).ready(() => {
   let isPlaying = false;
-  let audSourceIsConnected = false;
+  // let audSourceIsConnected = false;
+  // let offsetStartTime = 0;
 
   // Create audio context with Web Audio API to allow for audio manupulation
   let audioContext;
   let audioBuffers;
   let gainNodes;
+  let sources = [];
 
   const audioSources = [
     $('#soprano').find('source'),
@@ -66,29 +68,41 @@ $(document).ready(() => {
 
   // control playing and pausing
   playPause.click(() => {
-    if(audSourceIsConnected) {
+    if(sources.length !== 0) {
       // normal play-pause control
       playPauseAll();
     } else {
       // initialise audioContext, decode audio and create buffer source(s)
       audioContext.resume().then(() => {
         const current_time = audioContext.currentTime;
-        audioBuffers.forEach( (buf, index) => {
-          const source = audioContext.createBufferSource();
-          source.buffer = buf;
-          source.connect(gainNodes[index]);
-          gainNodes[index].connect(audioContext.destination);
-          // start all audios after 0.5s just to be safe (to ensure they're in sync)
-          source.start( current_time + 0.5 );
-          requestAnimationFrame(updateProgressBar);
-        });
+        startPlayback(current_time, 0);
         const icon = playPause.find('i');
         icon.removeClass('fa-play');
         icon.addClass('fa-pause');
-        audSourceIsConnected = true;
+        // audSourceIsConnected = true;
       })
     }
   });
+
+  const startPlayback = (current_time, offsetTime) => {
+    audioBuffers.forEach( (buf, index) => {
+      const source = audioContext.createBufferSource();
+      source.buffer = buf;
+      source.connect(gainNodes[index]);
+      gainNodes[index].connect(audioContext.destination);
+      sources.push(source);
+      $(source).on('ended', () => {
+        console.log('Playback finished!')
+        // remove source from array
+        sources = sources.filter(s => s !== source);
+        resetPlayerUI();
+      })
+      // start all audios after 0.5s just to be safe (to ensure they're in sync)
+      source.start( current_time + 0.5, offsetTime );
+      // offsetStartTime = 0;
+      requestAnimationFrame(updateProgressBar);
+    });
+  }
 
   const playPauseAll = () => {
     const icon = playPause.find('i');
@@ -106,6 +120,7 @@ $(document).ready(() => {
       })
     }
   }
+
 
   $('#soprano').on('ended', function() {
     isPlaying = false;
@@ -126,8 +141,6 @@ $(document).ready(() => {
     })
   }
 
-  // progress bar
-  // $('#soprano').on('timeupdate', function() {
   function updateProgressBar() {
     const currentTime = audioContext.currentTime;
     const duration = audioBuffers[0].duration;
@@ -144,6 +157,7 @@ $(document).ready(() => {
     progressBar.value = progress;
     if (currentTime < duration) {
       requestAnimationFrame(updateProgressBar);
+    } else {
     }
   }
 
@@ -151,20 +165,39 @@ $(document).ready(() => {
     timeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
-  // initialise song duration when page loads and metadata is ready
-  $('#soprano').on('loadedmetadata', () => {
-    const duration = soprano.duration;
+  $('#progress-bar').on('input propertychange', function() {
+    if (sources.length === 0) {
+      return;
+    }
+    sources.forEach((source) => source.stop());
+    const progress = $(this).val();
+    const duration = audioBuffers[0].duration;
+    const newTime = (duration * progress) / 100;
+    const current_time = audioContext.currentTime;
+
+    startPlayback(current_time, newTime);
+
+  });
+
+  // initialise player UI
+  // $('#soprano').on('loadedmetadata', () => {
+  const resetPlayerUI = () => {
+    // const duration = soprano.duration;
+    let duration
+    try {
+      duration = audioBuffers[0].duration;
+    } catch {
+      duration = 0;
+    }
     const totalMinutes = Math.floor(duration / 60);
     const totalSeconds = Math.floor(duration % 60);
     setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
-  })
 
-  $('#progress-bar').on('input propertychange', function() {
-    const progress = $(this).val();
-    const duration = soprano.duration;
-    const currentTime = (duration * progress) / 100;
-    soprano.currentTime = currentTime;
-  });
+    const icon = playPause.find('i');
+    icon.removeClass('fa-pause');
+    icon.addClass('fa-play');
+  }
+  resetPlayerUI();
 
   // control muting of individual or all tracks
   const toggleMute = (audioItem, muteButton, gain) => {
