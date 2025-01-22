@@ -14,6 +14,6 @@ class Composer(BaseModel, Base):
     """
     __tablename__ = 'composers'
 
-    name = Column('name', String(45))
+    name = Column('name', String(45), unique=True)
 
     melodies = relationship('Melody', back_populates='composer')
