@@ -29,6 +29,14 @@ def create_melodies():
     storage.close()
 
 
+def test_get_melodies(client, create_composers,  create_melodies):
+    """ Tests the endpoint correctly returns all the melody objects in the DB
+    """
+    response = client.get('/api/v1/melodies')
+    assert response.status_code == 200
+    assert len(response.json) == 1
+
+
 def test_get_melody(client, create_composers,  create_melodies):
     """ Test that the endpoint returns the correct melody
     that matches the given ID
@@ -56,8 +64,13 @@ def test_post_melody(client, create_composers, create_melodies):
     assert 'fav_tune.mp3' in melody_filepaths
     assert len(composer.melodies) == 2
 
-    # Post melody to without a composer -> SUCESS
+    # Post melody to without a composer [None] -> SUCESS
     data = {'filepath': 'magic_sound.m4a'}
+    response = client.post('/api/v1/melodies/', data=data)
+    assert response.status_code == 200
+
+    # Post melody to without a composer [Empty string ''] -> SUCESS
+    data = {'filepath': 'songbird.mp3', 'composer_id': ''}
     response = client.post('/api/v1/melodies/', data=data)
     assert response.status_code == 200
 
@@ -66,8 +79,18 @@ def test_post_melody(client, create_composers, create_melodies):
     response = client.post('/api/v1/melodies', data=data)
     assert response.status_code == 400
 
-    # Post verse with missing filepath -> 400 Error
+    # Post verse with missing filepath [None] -> 400 Error
     data = {'filepath': None, 'composer_id': 'a6458a37-8b17'}
     response = client.post('/api/v1/melodies', data=data)
     assert response.status_code == 400
 
+    # Post verse with missing filepath [Empty string ''] -> 400 Error
+    data = {'filepath': '', 'composer_id': 'a6458a37-8b17'}
+    response = client.post('/api/v1/melodies', data=data)
+    assert response.status_code == 400
+    
+
+    # Post verse with filepath that already exists -> 400 Error
+    data = {'filepath': 'sweet_melody.m4a'}
+    response = client.post('/api/v1/melodies', data=data)
+    assert response.status_code == 400
