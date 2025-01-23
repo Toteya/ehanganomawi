@@ -7,6 +7,7 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.song import Song
+from sqlalchemy.exc import IntegrityError
 
 
 @app_views.route('/songs', methods=['GET'], strict_slashes=False)
@@ -41,9 +42,13 @@ def post_song():
     except ValueError:
         abort(400, description='Number must be an integer')
 
-    song = Song(number=number)
+    song = Song(title=title, number=number)
     storage.new(song)
-    storage.save()
+    try:
+        storage.save()
+    except IntegrityError:
+        storage.close()
+        abort(400, description="Song title already exists.")
     storage.close()
     return jsonify(song.to_dict())
 
