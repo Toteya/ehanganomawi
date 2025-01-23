@@ -13,7 +13,7 @@ import pytest
 def create_composers():
     """ Creates a composer object for testing
     """
-    composer1 = Composer(name='Sibelius')
+    composer1 = Composer(name='Sibelius', id='a6458a37-8b17')
     storage.new(composer1)
     storage.save()
     yield
