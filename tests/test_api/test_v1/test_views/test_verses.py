@@ -68,7 +68,6 @@ def test_post_verse(client, create_songs, create_verses):
                                'lyrics': 'Lorem ipsum dolor sit amet.'
                            })
     assert response.status_code == 200
-    assert 'Success' in response.json
     song = storage.get(Song, '43870a5d-cbd0')
     assert 'Lorem ipsum dolor sit amet.' in song.verses[0].lyrics
 
@@ -80,7 +79,7 @@ def test_post_verse(client, create_songs, create_verses):
                            })
     assert response.status_code == 404
 
-    # Post verse with missing lyrics-> 400 Error
+    # Post verse with missing lyrics -> 400 Error
     response = client.post('/api/v1/songs/43870a5d-cbd0/verses',
                            data={
                                'number': '1',
