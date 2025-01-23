@@ -23,7 +23,7 @@ class Melody(BaseModel, Base):
     """
     __tablename__ = 'melodies'
 
-    filepath = Column('filepath', String(256))
+    filepath = Column('filepath', String(256), unique=True)
     composer_id = Column('composer_id', String(45), ForeignKey('composers.id'),
                          nullable=True)
 
