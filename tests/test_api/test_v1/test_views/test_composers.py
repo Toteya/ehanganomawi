@@ -10,21 +10,40 @@ import pytest
 
 
 @pytest.fixture(scope='module')
-def create_composer():
+def create_composers():
     """ Creates a composer object for testing
     """
     composer1 = Composer(name='Sibelius')
     storage.new(composer1)
     storage.save()
     yield
-    storage.delete(composer1)
+    storage.delete_all(Composer)
     storage.save()
     storage.close()
 
 
-def test_get_composers(client, create_composer):
+def test_get_composers(client, create_composers):
     """ Tests that composers route returns all existing composers
     """
     response = client.get('/api/v1/composers')
     assert response.status_code == 200
     assert len(response.json) == 1
+
+def test_post_composer(client, create_composers):
+    """ Tests that the endpoint correctly creates a new composer object
+    """
+    # Post a composer with correct data -> SUCCESS
+    data = {'name': 'Vivaldi'}
+    response = client.post('/api/v1/composers', data=data)
+    assert response.status_code == 200
+    assert storage.get_by_filter(Composer, name='Vivaldi')
+
+    # Post a composer missing a name -> 400 Error
+    data = {'name': None}
+    response = client.post('/api/v1/composers', data=data)
+    assert response.status_code == 400
+
+    # Post a composer that already exists -> 400
+    data = {'name': 'Sibelius'}
+    response = client.post('/api/v1/composers', data=data)
+    assert response.status_code == 400
