@@ -45,6 +45,7 @@ def post_song():
     storage.new(song)
     storage.save()
     storage.close()
+    return jsonify(song.to_dict())
 
 
 # @app_views.route('composer/<composer_id>/songs', methods=['GET'],
