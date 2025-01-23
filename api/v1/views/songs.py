@@ -37,10 +37,11 @@ def post_song():
     number = request.form.get('number')
     if not title:
         abort(400, description='Title is missing')
-    try:
-        number = int(number)
-    except ValueError:
-        abort(400, description='Number must be an integer')
+    if number:
+        try:
+            number = int(number)
+        except ValueError:
+            abort(400, description='Number must be an integer')
 
     song = Song(title=title, number=number)
     storage.new(song)
