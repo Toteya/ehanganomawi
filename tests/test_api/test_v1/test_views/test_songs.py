@@ -47,20 +47,17 @@ def test_post_song(client, create_songs):
     assert response.status_code == 200
     assert storage.get_by_filter(Song, title='Song 81') is not None
 
-    # Post a song missing a title
+    # Post a song with a missing title -> 404 Error
     data = {'number': 81}
     response = client.post('/api/v1/songs', data=data)
-    # print(response.data)
     assert response.status_code == 400
     
-    # Post a song with invalid number
+    # Post a song with invalid number -> 400 Error
     data = {'title': 'Little Song', 'number': 7.5}
     response = client.post('/api/v1/songs', data=data)
-    print(response.json)
     assert response.status_code == 400
 
-    # Post a song with a title that already exists
+    # Post a song with a title that already exists -> 400 Error
     data = {'title': 'Song 34', 'number': 34}
     response = client.post('/api/v1/songs', data=data)
-    # print(response)
     assert response.status_code == 400
