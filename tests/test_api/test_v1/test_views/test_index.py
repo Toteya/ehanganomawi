@@ -26,9 +26,9 @@ def create_objects():
     storage.new(User(name='Marty', email='marty@oal.com', password='scrtPWD2'))
     storage.save()
     yield
-    objs = storage.all().values()
-    for obj in objs:
-        storage.delete(obj)
+    storage.delete_all(Composer)
+    storage.delete_all(Song)
+    storage.delete_all(User)
     storage.save()
     storage.close()
 
