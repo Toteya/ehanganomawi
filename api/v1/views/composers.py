@@ -31,6 +31,7 @@ def post_composer():
     try:
         storage.save()
     except IntegrityError:
+        storage.close()
         abort(400, description="Composer's name already exists.")
     storage.close()
 
