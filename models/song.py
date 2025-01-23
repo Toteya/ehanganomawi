@@ -14,8 +14,8 @@ class Song(BaseModel, Base):
     """
     __tablename__ = 'songs'
 
+    title = Column('title', String(45), unique=True)
     number = Column('number', Integer, nullable=True)
-    title = Column('title', String(45), nullable=True)
 
     verses = relationship('Verse', backref='song', cascade='all, delete-orphan')
     melodies = relationship('Melody', secondary=song_melody_assoc_table,
