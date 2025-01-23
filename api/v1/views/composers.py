@@ -7,6 +7,7 @@ from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
 from models.composer import Composer
+from sqlalchemy.exc import IntegrityError
 
 
 @app_views.route('/composers', strict_slashes=False)
@@ -27,5 +28,10 @@ def post_composer():
     
     composer = Composer(name=name)
     storage.new(composer)
-    storage.save()
+    try:
+        storage.save()
+    except IntegrityError:
+        abort(400, description="Composer's name already exists.")
     storage.close()
+
+    return jsonify(composer.to_dict())
