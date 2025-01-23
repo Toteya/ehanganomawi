@@ -21,7 +21,7 @@ def create_objects():
     """
     storage.new(Composer(name='Chopin'))
     storage.new(Composer(name='Bach'))
-    storage.new(Song(number=23))
+    storage.new(Song(number=23, title='My Song'))
     storage.new(User(name='Mike', email='mike@mail.com', password='myPass123'))
     storage.new(User(name='Marty', email='marty@oal.com', password='scrtPWD2'))
     storage.save()

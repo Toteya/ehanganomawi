@@ -13,8 +13,8 @@ import pytest
 def create_songs():
     """ Creates song objects for testing
     """
-    song34 = Song(number=34, id='93016e68-8e7e')
-    song22 = Song(number=22, id='43870a5d-cbd0')
+    song34 = Song(number=34, title='Song 34', id='93016e68-8e7e')
+    song22 = Song(number=22, title='Song 22', id='43870a5d-cbd0')
     storage.new(song34)
     storage.new(song22)
     storage.save()
