@@ -38,6 +38,9 @@ def post_melody():
     composer_id = request.form.get('composer_id')
     if not filepath:
         abort(400, description='Title is missing')
+    if composer_id == '':
+        composer_id = None
+        
     if composer_id and not storage.get(Composer, composer_id):
         abort(400, description='The composer id given does not exist.')
 
@@ -47,6 +50,6 @@ def post_melody():
         storage.save()
     except IntegrityError:
         storage.close()
-        abort(400, description="A melody already exists in that filepath.")
+        abort(400, description=f"A melody already exists with that filepath {filepath}.")
     storage.close()
     return jsonify(melody.to_dict())
