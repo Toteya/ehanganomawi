@@ -75,4 +75,4 @@ def post_verse(song_id):
     storage.save()
     storage.close()
 
-    return jsonify({'Success': 'Verse added'})
+    return jsonify(verse.to_dict())
