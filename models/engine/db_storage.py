@@ -87,6 +87,15 @@ class DBStorage:
         """
         if obj is not None:
             self.__session.delete(obj)
+    
+    def delete_all(self, clss=None):
+        """ Deletes all objects from the given class
+        """
+        if clss is None:
+            return
+        objs = self.all(clss).values()
+        for obj in objs:
+            self.delete(obj)
 
     def save(self):
         """ Commits all changes from the current session to the database
