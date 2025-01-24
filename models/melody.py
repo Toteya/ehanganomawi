@@ -28,5 +28,5 @@ class Melody(BaseModel, Base):
                          nullable=True)
 
     songs = relationship('Song', secondary='song_melody_assoc_table',
-                         back_populates='melodies', viewonly=True)
+                         back_populates='melodies')
     composer = relationship('Composer', back_populates='melodies')

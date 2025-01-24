@@ -19,4 +19,4 @@ class Song(BaseModel, Base):
 
     verses = relationship('Verse', backref='song', cascade='all, delete-orphan')
     melodies = relationship('Melody', secondary=song_melody_assoc_table,
-                            back_populates='songs', viewonly=True)
+                            back_populates='songs')
