@@ -8,6 +8,14 @@ from flask import render_template
 from flask_login import login_required, current_user
 
 
+@app_main.context_processor
+def inject_user():
+    values = {
+        'isLoggedIn': current_user.is_authenticated
+    }
+    return values
+
+
 @app_main.route('/')
 def index():
     """ Renders index page

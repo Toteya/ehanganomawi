@@ -6,11 +6,17 @@ respectively
 """
 from web_app.auth import app_auth
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import login_user, login_required, logout_user
+from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import storage
 from models.user import User
 
+@app_auth.context_processor
+def inject_user():
+    values = {
+        'isLoggedIn': current_user.is_authenticated
+    }
+    return values
 
 @app_auth.route('/login')
 def login():
