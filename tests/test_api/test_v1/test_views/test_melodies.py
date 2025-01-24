@@ -6,9 +6,11 @@ Contains pytests for API views - melodies endpoints
 """
 from test_app import client
 from test_composers import create_composers
+from test_songs import create_songs
 from models import storage
 from models.composer import Composer
 from models.melody import Melody
+from models.song import Song
 import pytest
 
 
@@ -94,3 +96,40 @@ def test_post_melody(client, create_composers, create_melodies):
     data = {'filepath': 'sweet_melody.m4a'}
     response = client.post('/api/v1/melodies', data=data)
     assert response.status_code == 400
+
+
+def test_post_song_melodies(client, create_songs, create_melodies):
+    """ Tests that the endpoint correctly adds a melody to a song
+    """
+    # POST existing song and existing melody -> SUCCESS
+    song_id = '93016e68-8e7e'
+    melody_id = 'df7943f3-2759'
+    response = client.post(f'/api/v1/songs/{song_id}/melodies/{melody_id}')
+    assert response.status_code == 201
+    song = storage.get(Song, song_id)
+    melody_filepaths = [melody.filepath for melody in song.melodies]
+    assert 'sweet_melody.m4a' in melody_filepaths
+
+    # POST existing song and non-exsitent melody -> 404 Error
+    # POST existing melody and non-exsitent song-> 404 Error
+    # POST melody to a song that already has that same melody -> 400 Error
+
+
+
+def test_get_song_melodies(client, create_songs, create_melodies):
+    """ Tests that endpoint correctly returns the melody(ies) linked
+    to the given song
+    """
+    song_id = '43870a5d-cbd0'
+    song = storage.get(Song, song_id)
+    melody = storage.get(Melody, 'df7943f3-2759')
+    song.melodies.append(melody)
+    storage.save()
+    storage.close()
+    response = client.get(f'/api/v1/songs/{song_id}/melodies')
+    assert response.status_code == 200
+    try:
+        melody_filepaths = [melody['filepath'] for melody in response.json]
+        assert 'sweet_melody.m4a' in melody_filepaths
+    except AttributeError as error:
+        pytest.fail(f'The response was unexpected: {error}')
