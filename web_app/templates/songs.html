@@ -1,125 +1,217 @@
 {% extends "base.html" %}
 
-{% block content %}
-  <aside class="menu has-text-light has-background-primary-20">
-    <p class="menu-label">Playlist</p>
-    <ul class="menu-list"></ul>
-    <!-- <h4 class="has-text-weight-semibold">PLAYLIST</h4> -->
-  </aside>
-  <section class="section">
-    <!-- <div class="columns"> -->
+    {% block headlinks %}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css">
+      <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}" class="rel">
+    {% endblock %}
 
-      <!-- <div class="column is-four-fifths"> -->
+  {% block content %}
+    <div id="app" style="height: 100%; min-height: 100%;">
+          
+      <nav class="nav has-shadow">
         <div class="container">
-
-          <!-- media player -->
-          <div id="audio-player" class="box m-4">
-            <p class="mb-4">Press PLAY to learn the melody</p>
-            <div class="container" style="display: none;">
-              <audio id="soprano" controls>
-                <source src="{{ url_for('static', filename='assets/audio/soprano.m4a') }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-              <audio id="alto" controls>
-                <!-- <source src="{{ url_for('static', filename='audio/alto.mp2') }}" type="audio/mpeg"> -->
-                <source src="{{ url_for('static', filename='assets/audio/alto.m4a') }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-              <audio id="tenor" controls>
-                <!-- <source src="{{ url_for('static', filename='audio/tenor.mp2') }}" type="audio/mpeg"> -->
-                <source src="{{ url_for('static', filename='assets/audio/tenor.m4a') }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-              <audio id="bass" controls>
-                <!-- <source src="{{ url_for('static', filename='audio/bass.mp2') }}" type="audio/mpeg"> -->
-                <source src="{{ url_for('static', filename='assets/audio/bass.m4a') }}" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-            <div class="container" style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
-              <div class="controls">
-                <div class="container">
-                  <button class="button is-small" id="play-pause" style="margin-right: 1.5rem;">
-                    <span>
-                      <i class="fas fa-play"></i>
-                    </span>
-                  </button>
-                  <button class="button is-small" id="music-tools" style="margin-right: 1.5rem;">
-                    <span>
-                      <i class="fas fa-music"></i>
-                    </span>
-                  </button>
-                  <label for="volume-control">
-                    <span class="icon is-small is-clickable">
-                      <i class="fas fa-volume-high"></i>
-                    </span>
-                  </label>
-                  <input type="range" id="volume-control" class="is-clickable" min="0" max="1" step="0.01" value="1">
-                </div>
-              </div>
-            </div>
-            <div class="section" style="padding: 1rem;">
-              <input id="progress-bar" type="range" class="is-small is-clickable" value="0" min="0" max="100" step="0.01" style="margin-bottom: 0; width: 100%;">
-              <!-- </progress> -->
-              <div class="container">
-                <div class="columns is-mobile">
-                  <div class="column is-half has-text-left" id="current-time">0:00</div>
-                  <div class="column is-half has-text-right" id="total-time">0:00</div>
-                </span>
-              </div>
-            </div>
-            </div>
-            <!-- muting control -->
-            <div class="container" style="margin-bottom: 1rem;">
-              <button class="button" id="mute-all">
-                <span class="icon">
-                  <i class="fas fa-volume-xmark"></i>
-                </span>
-                <span>All</span>
-              </button>
-              <button class="button" id="unmute-all">
-                <span class="icon">
-                  <i class="fas fa-volume-high"></i>
-                </span>
-                <span>All</span>
-              </button>
-              <button class="button" id="mute-soprano">
-                <span class="icon">
-                  <i class="fas fa-volume-high"></i>
-                </span>
-                <span>Soprano</span>
-              </button>
-              <button class="button" id="mute-alto">
-                <span class="icon">
-                  <i class="fas fa-volume-high"></i>
-                </span>
-                <span>Alto</span>
-              </button>
-              <button class="button" id="mute-tenor">
-                <span class="icon">
-                  <i class="fas fa-volume-high"></i>
-                </span>
-                <span>Tenor</span>
-              </button>
-              <button class="button" id="mute-bass">
-                <span class="icon">
-                  <i class="fas fa-volume-high"></i>
-                </span>
-                <span>Bass</span>
-              </button>
-            </div>
+          <div class="nav-left">
+            <a class="nav-item">
+              Search
+            </a>
           </div>
-          <div class="container px-6 has-text-white">
-            <h4 class="has-text-weight-semibold">LYRICS</h4>
-            <!-- lyrics -->
-            <!-- {% for verse in verses %}
-              <p class="mb-5">{{ verse.number }}. {{ verse.lyrics }}</p>
-            {% endfor %} -->
-            <p class="mb-5">1. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa quaerat exercitationem quo consectetur dolores maxime fugiat voluptatum officiis expedita neque!</p>
-            <p class="mb-5">2. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus molestiae suscipit ipsa dolore architecto animi magnam consequatur minus aliquam ad.</p>
+          <label for="menu-toggle" class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+          <input type="checkbox" id="menu-toggle" class="navbar-burger is-hidden">
+          <div class="nav-right nav-menu">
+            <a class="nav-item is-tab is-hidden-tablet">
+              <span class="icon"><i class="fa fa-home"></i></span> Home
+            </a>
+            <a class="nav-item is-tab is-hidden-tablet">
+              <span class="icon"><i class="fa fa-table"></i></span> Library
+            </a>
+            <a class="nav-item is-tab is-hidden-tablet">
+              <span class="icon"><i class="fa fa-info"></i></span> About
+            </a>
+            
+            <a class="nav-item is-tab is-active">
+              <span class="icon"><i class="fa fa-user"></i></span>
+            </a>
+            <a class="nav-item is-tab">
+              <span class="icon"><i class="fa fa-sign-out"></i></span>
+            </a>
           </div>
         </div>
-      <!-- </div> -->
-    <!-- </div> -->
-  </section>
-{% endblock %}
+      </nav>
+
+      <section class="columns is-fullheight">
+        <!-- playlist sidebar -->
+        <aside class="column is-2 is-mobile is-fullheight section is-hidden-mobile">
+          <p class="menu-label">Playlist</p>
+          <ul class="menu-list">
+            <!-- list of Songs -->
+            {% for song in songs %}
+              <li>
+                <a href="#" class="">
+                  <span class="icon"><i class="fa fa-music"></i></span>
+                  {{ song.name }}
+                </a>
+              </li>
+            {% endfor %}
+            <li>
+              <a href="#" class="">
+                <span class="icon"><i class="fa fa-home"></i></span>
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#" class="is-active">
+                <span class="icon"><i class="fa fa-table"></i></span>
+                Links
+              </a>
+
+            </li>
+            <li>
+              <a href="#" class="">
+                <span class="icon"><i class="fa fa-info"></i></span>
+                About
+              </a>
+            </li>
+          </ul>
+        </aside>
+
+        <!-- main content -->
+        <div class="container column is-10">
+          <div class="section">
+            <!-- media player -->
+            <div id="audio-player" class="box m-4">
+              <p class="mb-4">Press PLAY to learn the melody</p>
+              <div style="display: none;">
+                <audio id="soprano" controls>
+                  <source src="{{ url_for('static', filename='assets/audio/soprano.m4a') }}" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+                <audio id="alto" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/alto.mp2') }}" type="audio/mpeg"> -->
+                  <source src="{{ url_for('static', filename='assets/audio/alto.m4a') }}" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+                <audio id="tenor" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/tenor.mp2') }}" type="audio/mpeg"> -->
+                  <source src="{{ url_for('static', filename='assets/audio/tenor.m4a') }}" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+                <audio id="bass" controls>
+                  <!-- <source src="{{ url_for('static', filename='audio/bass.mp2') }}" type="audio/mpeg"> -->
+                  <source src="{{ url_for('static', filename='assets/audio/bass.m4a') }}" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+              <div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
+                <div class="controls">
+                  <div>
+                    <button class="button is-small" id="play-pause" style="margin-right: 1.5rem;">
+                      <span>
+                        <i class="fas fa-play"></i>
+                      </span>
+                    </button>
+                    <button class="button is-small" id="music-tools" style="margin-right: 1.5rem;">
+                      <span>
+                        <i class="fas fa-music"></i>
+                      </span>
+                    </button>
+                    <label for="volume-control">
+                      <span class="icon is-small is-clickable">
+                        <i class="fas fa-volume-high"></i>
+                      </span>
+                    </label>
+                    <input type="range" id="volume-control" class="is-clickable" min="0" max="1" step="0.01" value="1">
+                  </div>
+                </div>
+              </div>
+              <!-- progress bar -->
+              <div class="section" style="padding: 1rem;">
+                <input id="progress-bar" type="range" class="is-small is-clickable" value="0" min="0" max="100" step="0.01" style="margin-bottom: 0; width: 100%;">
+                <div>
+                  <div class="columns">
+                    <div class="column is-half has-text-left" id="current-time">0:00</div>
+                    <div class="column is-half has-text-right" id="total-time">0:00</div>
+                  </span>
+                </div>
+              </div>
+              </div>
+              <!-- muting control -->
+              <div style="margin-bottom: 1rem;">
+                <button class="button" id="mute-all">
+                  <span class="icon">
+                    <i class="fas fa-volume-xmark"></i>
+                  </span>
+                  <span>All</span>
+                </button>
+                <button class="button" id="unmute-all">
+                  <span class="icon">
+                    <i class="fas fa-volume-high"></i>
+                  </span>
+                  <span>All</span>
+                </button>
+                <button class="button" id="mute-soprano">
+                  <span class="icon">
+                    <i class="fas fa-volume-high"></i>
+                  </span>
+                  <span>Soprano</span>
+                </button>
+                <button class="button" id="mute-alto">
+                  <span class="icon">
+                    <i class="fas fa-volume-high"></i>
+                  </span>
+                  <span>Alto</span>
+                </button>
+                <button class="button" id="mute-tenor">
+                  <span class="icon">
+                    <i class="fas fa-volume-high"></i>
+                  </span>
+                  <span>Tenor</span>
+                </button>
+                <button class="button" id="mute-bass">
+                  <span class="icon">
+                    <i class="fas fa-volume-high"></i>
+                  </span>
+                  <span>Bass</span>
+                </button>
+              </div>
+            </div>
+            <br>
+
+            <!-- lyrics -->
+            <div>
+              <h4>1.</h4>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ab nemo nisi repellat pariatur adipisci eum fugit, necessitatibus incidunt laboriosam.</p>
+              <br>
+              <h4>2.</h4>
+              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore deserunt repellat tempora laudantium impedit atque, officia aspernatur autem! Dolore, porro?</p>
+              <br>
+              <h4>3.</h4>
+              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem repudiandae sequi nihil laudantium eum maxime repellendus nulla, mollitia dolorem distinctio.</p>
+              <br>
+            </div>
+            <br>
+
+            <div>
+              {% for verse in verses%}
+                <h4>{{ verse.number }}.</h4>
+                <p>{{ verse.lyrics }}</p>
+                <br>
+              {% endfor %}
+            </div>
+            <br>
+
+          </div>
+        </div>
+        
+      </section>
+
+    
+    </div>
+  {% endblock %}
+
+  {% block scripts %}
+    <script type="module" src="{{ url_for('static', filename='scripts/audio_mixer.js') }}"></script>
+  {% endblock %}
