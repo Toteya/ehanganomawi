@@ -23,20 +23,20 @@
           <input type="checkbox" id="menu-toggle" class="navbar-burger is-hidden">
           <div class="nav-right nav-menu">
             <a class="nav-item is-tab is-hidden-tablet">
-              <span class="icon"><i class="fa fa-home"></i></span> Home
+              <span class="icon"><i class="fas fa-home"></i></span> Home
             </a>
             <a class="nav-item is-tab is-hidden-tablet">
-              <span class="icon"><i class="fa fa-table"></i></span> Library
+              <span class="icon"><i class="fas fa-table"></i></span> Library
             </a>
             <a class="nav-item is-tab is-hidden-tablet">
-              <span class="icon"><i class="fa fa-info"></i></span> About
+              <span class="icon"><i class="fas fa-info"></i></span> About
             </a>
             
             <a class="nav-item is-tab is-active">
-              <span class="icon"><i class="fa fa-user"></i></span>
+              <span class="icon"><i class="fas fa-user"></i></span>
             </a>
             <a class="nav-item is-tab">
-              <span class="icon"><i class="fa fa-sign-out"></i></span>
+              <span class="icon"><i class="fas fa-sign-out"></i></span>
             </a>
           </div>
         </div>
@@ -50,31 +50,31 @@
             <!-- list of Songs -->
             {% for song in songs %}
               <li>
-                <a href="#" class="">
+                <a href="#" class="song" data-id="{{ song.id }}">
                   <span class="icon is-small"><i class="fa fa-music"></i></span>
                   {{ song.title }}
                 </a>
               </li>
             {% endfor %}
-            <li>
+            <!-- <li>
               <a href="#" class="">
-                <span class="icon"><i class="fa fa-home"></i></span>
+                <span class="icon"><i class="fas fa-home"></i></span>
                 Home
               </a>
-            </li>
+            </li> -->
             <li>
               <a href="#" class="is-active">
-                <span class="icon"><i class="fa fa-table"></i></span>
-                Links
+                <span class="icon"><i class="fas fa-table"></i></span>
+                Library
               </a>
 
             </li>
-            <li>
+            <!-- <li>
               <a href="#" class="">
-                <span class="icon"><i class="fa fa-info"></i></span>
+                <span class="icon"><i class="fas fa-info"></i></span>
                 About
               </a>
-            </li>
+            </li> -->
           </ul>
         </aside>
 
@@ -212,4 +212,5 @@
 
   {% block scripts %}
     <script type="module" src="{{ url_for('static', filename='scripts/audio_mixer.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='scripts/requests.js') }}"></script>
   {% endblock %}
