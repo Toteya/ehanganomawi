@@ -3,9 +3,11 @@
 module main:
 Renders main web app templates
 """
-from web_app.main import app_main
 from flask import render_template
 from flask_login import login_required, current_user
+from models import storage
+from models.song import Song
+from web_app.main import app_main
 
 
 @app_main.context_processor
@@ -35,5 +37,8 @@ def profile():
 def songs():
     """ Renders the songs page
     """
-    # load songs from database
-    return render_template('songs.html')
+    # load all songs from database
+    songs = storage.all(Song).values()
+    songs = sorted(songs, key=lambda k: k.title)
+
+    return render_template('songs.html', songs=songs)
