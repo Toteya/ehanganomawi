@@ -3,12 +3,13 @@
 module melodies:
 Contains API endpoints related to melody objects
 """
-from api.v1.views import app_views
 from flask import abort, jsonify, request
+from sqlalchemy.exc import IntegrityError
+from api.v1.views import app_views
 from models import storage
 from models.composer import Composer
 from models.melody import Melody
-from sqlalchemy.exc import IntegrityError
+from models.song import Song
 
 
 @app_views.route('/melodies', methods=['GET'], strict_slashes=False)
@@ -53,3 +54,38 @@ def post_melody():
         abort(400, description=f"A melody already exists with that filepath {filepath}.")
     storage.close()
     return jsonify(melody.to_dict())
+
+
+@app_views.route('/songs/<song_id>/melodies', methods=['GET'],
+                 strict_slashes=False)
+def get_song_melodies(song_id):
+    """ Returns the melody or melodies of the given song
+    NB: A song can have multiple melodies, therefore an array is returned
+    """
+    song = storage.get(Song, song_id)
+    if not song:
+        abort(404)
+
+    melodies = [melody.to_dict() for melody in song.melodies]
+    return jsonify(melodies)
+
+
+
+@app_views.route('/songs/<song_id>/melodies/<melody_id>', methods=['POST'],
+                 strict_slashes=False)
+def post_song_melodies(song_id, melody_id):
+    """ Adds the given melody to the given song
+    """
+    melody = storage.get(Melody, melody_id)
+    song = storage.get(Song, song_id)
+    if not melody:
+        abort(404)
+    if not song:
+        abort(404)
+    if melody in song.melodies:
+        abort(400, description='That melody has already been added to this song')
+
+    song.melodies.append(melody)
+    storage.save()
+    storage.close()
+    return jsonify(song.to_dict()), 201
