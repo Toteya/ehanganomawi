@@ -44,15 +44,15 @@
 
       <section class="columns is-fullheight">
         <!-- playlist sidebar -->
-        <aside class="column is-2 is-mobile is-fullheight section is-hidden-mobile">
+        <aside class="column px-1 is-2 is-mobile is-fullheight section is-hidden-mobile">
           <p class="menu-label">Playlist</p>
           <ul class="menu-list">
             <!-- list of Songs -->
             {% for song in songs %}
               <li>
                 <a href="#" class="">
-                  <span class="icon"><i class="fa fa-music"></i></span>
-                  {{ song.name }}
+                  <span class="icon is-small"><i class="fa fa-music"></i></span>
+                  {{ song.title }}
                 </a>
               </li>
             {% endfor %}
@@ -84,27 +84,26 @@
             <!-- media player -->
             <div id="audio-player" class="box m-4">
               <p class="mb-4">Press PLAY to learn the melody</p>
+              <!-- audio sources -->
               <div style="display: none;">
                 <audio id="soprano" controls>
-                  <source src="{{ url_for('static', filename='assets/audio/soprano.m4a') }}" type="audio/mpeg">
+                  <source value="{{ url_for('static', filename='assets/audio/soprano.m4a') }}" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
                 <audio id="alto" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/alto.mp2') }}" type="audio/mpeg"> -->
-                  <source src="{{ url_for('static', filename='assets/audio/alto.m4a') }}" type="audio/mpeg">
+                  <source value="{{ url_for('static', filename='assets/audio/alto.m4a') }}" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
                 <audio id="tenor" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/tenor.mp2') }}" type="audio/mpeg"> -->
-                  <source src="{{ url_for('static', filename='assets/audio/tenor.m4a') }}" type="audio/mpeg">
+                  <source value="{{ url_for('static', filename='assets/audio/tenor.m4a') }}" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
                 <audio id="bass" controls>
-                  <!-- <source src="{{ url_for('static', filename='audio/bass.mp2') }}" type="audio/mpeg"> -->
-                  <source src="{{ url_for('static', filename='assets/audio/bass.m4a') }}" type="audio/mpeg">
+                  <source value="{{ url_for('static', filename='assets/audio/bass.m4a') }}" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
               </div>
+              <!-- player control buttons -->
               <div style="margin-top: 0.5rem; margin-bottom: 0.2rem;">
                 <div class="controls">
                   <div>
@@ -134,9 +133,8 @@
                   <div class="columns">
                     <div class="column is-half has-text-left" id="current-time">0:00</div>
                     <div class="column is-half has-text-right" id="total-time">0:00</div>
-                  </span>
+                  </div>
                 </div>
-              </div>
               </div>
               <!-- muting control -->
               <div style="margin-bottom: 1rem;">
