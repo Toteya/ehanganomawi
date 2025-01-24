@@ -6,9 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OMAWI</title>
+    <data id="isLoggedIn" value="{{ isLoggedIn }}"></data>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <data id="isLoggedIn" value="{{ isLoggedIn }}"></data>
+    {% block headlinks %}
+    {% endblock %}
   </head>
 
   <body>
@@ -73,7 +75,9 @@
     <!-- </section> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="{{ url_for('static', filename='scripts/index.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='scripts/audio_mixer.js') }}"></script>
+    <!-- <script type="module" src="{{ url_for('static', filename='scripts/audio_mixer.js') }}"></script> -->
+    {% block scripts %}
+    {% endblock %}
   </body>
 
 </html>
