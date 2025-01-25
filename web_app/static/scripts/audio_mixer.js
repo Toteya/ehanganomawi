@@ -1,4 +1,5 @@
 // Handles the interactive functionality of the music player / songs page
+import { getSongMelody } from "../scripts/requests.js";
 
 $(document).ready(() => {
   // Create audio context with Web Audio API to allow for audio manupulation
@@ -9,35 +10,39 @@ $(document).ready(() => {
   let startTime;
   let offsetTime = 0;
 
-  const audioSources = [
-    $('#soprano').find('source'),
-    $('#alto').find('source'),
-    $('#tenor').find('source'),
-    $('#bass').find('source'),
-  ];
+  function initAudioContext() {
+    offsetTime = 0;
+    const audioSources = [
+      $('#soprano').find('source'),
+      $('#alto').find('source'),
+      $('#tenor').find('source'),
+      $('#bass').find('source'),
+    ];
 
-  try {
-    audioContext = new (window.AudioContext || window.webkitAudioContext());
-  } catch (error) {
-    window.alert('Your browser does not support the Web Audio API.');
-  }
+    try {
+      audioContext = new (window.AudioContext || window.webkitAudioContext());
+    } catch (error) {
+      window.alert('Your browser does not support the Web Audio API.');
+    }
 
-  if (audioContext !== undefined) {
-    (async() => {
-      const paths = audioSources.map((audioSource) => audioSource.attr('src'));
-      // fetch data for each audio source file
-      const dataBuffers = await Promise.all(
-        paths.map( (path) => fetch( path ).then( (res) => res.arrayBuffer() ) )
-      );
-      // create audio buffers / decode the audio data
-      audioBuffers = await Promise.all(
-        dataBuffers.map( (buf) => audioContext.decodeAudioData( buf ) )
-      );
-      // gain nodes to allow mute/unmute individual tracks
-      gainNodes = audioBuffers.map(() => audioContext.createGain());
-    })();
-    // The AudioContext will not be allowed to start at this stage.
-    // It will be resumed (or created) after a user gesture (when the play button is clicked).
+    if (audioContext !== undefined) {
+      (async() => {
+        const paths = audioSources.map((audioSource) => audioSource.data('src'));
+        // fetch data for each audio source file
+        const dataBuffers = await Promise.all(
+          paths.map( (path) => fetch( path ).then( (res) => res.arrayBuffer() ) )
+        );
+        // create audio buffers / decode the audio data
+        audioBuffers = await Promise.all(
+          dataBuffers.map( (buf) => audioContext.decodeAudioData( buf ) )
+        );
+        // gain nodes to allow mute/unmute individual tracks
+        gainNodes = audioBuffers.map(() => audioContext.createGain());
+      })();
+      resetPlayerUI();
+      // The AudioContext will not be allowed to start at this stage.
+      // It will be resumed (or created) after a user gesture (when the play button is clicked).
+    }
   }
 
   const playPause = $('#play-pause');
@@ -240,4 +245,27 @@ $(document).ready(() => {
       muteAudio(icon, span, gain);
     });
   });
+
+  $('.song').each(function() {
+    $(this).on('click', function(event) {
+      event.preventDefault();
+      const songID = $(this).data('id');
+
+      getSongMelody(songID).then((path) => {
+        console.log('MELODY:', path);
+        const sopranoPath = `../static/assets/audio/${path}/soprano.m4a`;
+        const altoPath = `../static/assets/audio/${path}/alto.m4a`;
+        const tenorPath = `../static/assets/audio/${path}/tenor.m4a`;
+        const bassPath = `../static/assets/audio/${path}/bass.m4a`;
+
+        $('#soprano').find('source').data('src', sopranoPath);
+        $('#alto').find('source').data('src', altoPath);
+        $('#tenor').find('source').data('src', tenorPath);
+        $('#bass').find('source').data('src', bassPath);
+        offsetTime = 0;
+        initAudioContext();
+      })
+    });
+  });
+
 });
