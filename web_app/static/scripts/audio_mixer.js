@@ -21,6 +21,8 @@ $(document).ready(() => {
   const muteTenor = $('#mute-tenor')
   const muteBass = $('#mute-bass')
 
+  const muteButtons = [muteSoprano, muteAlto, muteTenor, muteBass];
+
   const audioSources = [
     $('#soprano').find('source'),
     $('#alto').find('source'),
@@ -62,12 +64,15 @@ $(document).ready(() => {
   }
 
 
-  const muteButtons = [muteSoprano, muteAlto, muteTenor, muteBass]
 
   // control playing and pausing
   playPause.click(() => {
+    if (audioContext === undefined) {
+      return;
+    }
     if(sources.length !== 0) {
       // normal play-pause control
+      console.log('NORMAL PLAYBACK!');
       playPauseAll();
     } else {
       // enable the audioContext through a user gesture (button click)
@@ -94,7 +99,9 @@ $(document).ready(() => {
       sources.push(source);
       $(source).on('ended', () => {
         // remove source from array / clear the sources array
+        console.log('Playback Ended!');
         sources = sources.filter(s => s !== source);
+        // sources = [];
         resetPlayerUI();
         // offsetTime = 0;  DO NOT UNCOMMENT THIS!!! It will break progress bar seeking
       })
@@ -274,7 +281,10 @@ $(document).ready(() => {
 
         try {
           const wasPlaying = audioContext.state == 'running';
-          sources.forEach((source) => source.stop());
+          sources.forEach((source) => {
+            source.stop()
+            sources = sources.filter(s => s !== source);
+          });
           audioContext.close().then(() => {
             initAudioContext().then(() => {
               if (wasPlaying) {
