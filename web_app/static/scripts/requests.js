@@ -35,11 +35,15 @@ const getSongLyrics = async (song_id) => {
             $('div.lyrics').append(number, lyrics, linebreak);
           }
         } else {
-          const line1 = $('<p></p>');
-          const line2 = $('<p></p>');
+          const p1 = $('<p></p>');
+          const p2 = $('<p></p>');
+          const line1 = $('<em></em>');
+          const line2 = $('<em></em>');
           line1.text('Lyrics currently unvailable for this song.')
-          line2.text('Please try again later')
-          $('div.lyrics').append(line1, line2);
+          line2.text('Please try again later.')
+          p1.append(line1);
+          p2.append(line2);
+          $('div.lyrics').append(p1, p2);
         }
         resolve(verses)
       },
