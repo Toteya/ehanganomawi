@@ -101,7 +101,6 @@ $(document).ready(() => {
         // remove source from array / clear the sources array
         console.log('Playback Ended!');
         sources = sources.filter(s => s !== source);
-        // sources = [];
         resetPlayerUI();
         // offsetTime = 0;  DO NOT UNCOMMENT THIS!!! It will break progress bar seeking
       })
@@ -141,18 +140,17 @@ $(document).ready(() => {
     })
   }
 
+  // progress bar
   function updateProgressBar() {
     const duration = audioBuffers[0].duration;
-    const progressTime = audioContext.currentTime - startTime + offsetTime;
+    let progressTime = audioContext.currentTime - startTime + offsetTime;
+    if (progressTime < 0) progressTime = 0;
 
     const currentMinutes = Math.floor(progressTime / 60);
     const currentSeconds = Math.floor(progressTime % 60);
     const totalMinutes = Math.floor(duration / 60);
     const totalSeconds = Math.floor(duration % 60);
   
-    // console.log(`OFFSET: ${offsetTime}, START: ${startTime}`);
-    // console.log(`ACT: ${audioContext.currentTime}, PROGRESS: ${progressTime}`);
-
     setTimeDisplay(currentTimeDisplay, currentSeconds, currentMinutes);
     setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
 
@@ -262,6 +260,7 @@ $(document).ready(() => {
     });
   });
 
+  // selecting and changing songs
   $('.song').each(function() {
     $(this).on('click', function(event) {
       event.preventDefault();
