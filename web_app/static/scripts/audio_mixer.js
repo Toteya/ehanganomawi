@@ -263,6 +263,8 @@ $(document).ready(() => {
     $(this).on('click', function(event) {
       event.preventDefault();
       const songID = $(this).data('id');
+      const songTitle = $(this).data('title');
+      $('p.song-title').text(songTitle);
       
       getSongLyrics(songID);
 
