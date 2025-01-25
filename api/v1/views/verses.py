@@ -45,6 +45,8 @@ def get_verses(song_id):
         abort(404)
 
     verses = [verse.to_dict() for verse in song.verses]
+    verses = sorted(verses, key=lambda k: k['number'])
+
     return jsonify(verses)
 
 
