@@ -6,6 +6,7 @@ Renders main web app templates
 from flask import render_template
 from flask_login import login_required, current_user
 from models import storage
+from models.composer import Composer
 from models.song import Song
 from web_app.main import app_main
 
@@ -40,5 +41,8 @@ def songs():
     # load all songs from database
     songs = storage.all(Song).values()
     songs = sorted(songs, key=lambda k: k.title)
+    # load all the composers from db
+    composers = storage.all(Composer).values()
+    composers = sorted(composers, key=lambda k: k.name)
 
-    return render_template('songs.html', songs=songs)
+    return render_template('songs.html', songs=songs, composers=composers)
