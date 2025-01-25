@@ -72,7 +72,6 @@ $(document).ready(() => {
     }
     if(sources.length !== 0) {
       // normal play-pause control
-      console.log('NORMAL PLAYBACK!');
       playPauseAll();
     } else {
       // enable the audioContext through a user gesture (button click)
@@ -99,7 +98,6 @@ $(document).ready(() => {
       sources.push(source);
       $(source).on('ended', () => {
         // remove source from array / clear the sources array
-        console.log('Playback Ended!');
         sources = sources.filter(s => s !== source);
         resetPlayerUI();
         // offsetTime = 0;  DO NOT UNCOMMENT THIS!!! It will break progress bar seeking
@@ -288,6 +286,9 @@ $(document).ready(() => {
             initAudioContext().then(() => {
               if (wasPlaying) {
                 startPlayback();
+                const icon = playPause.find('i');
+                icon.removeClass('fa-play');
+                icon.addClass('fa-pause');
               }
             })
           })
