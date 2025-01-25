@@ -11,9 +11,20 @@
       <nav class="nav has-shadow">
         <div class="container">
           <div class="nav-left">
-            <a class="nav-item">
-              Search
-            </a>
+            <div class="navbar-item">
+              <input input="text" class="navbar-search my-2" placeholder="Search">
+              </imput>
+            </div>
+            <!-- <div id="composers" class="navbar-item has-dropdown">
+              <a  class="navbar-link field">Composers</a>
+              <div class="navbar-dropdown is-boxed">
+                {% for composer in composers %}
+                  <a class="navbar-item">
+                    {{ composer.name }}
+                  </a>
+                {% endfor %}
+              </div>
+            </div> -->
           </div>
           <label for="menu-toggle" class="nav-toggle">
             <span></span>
@@ -21,23 +32,15 @@
             <span></span>
           </label>
           <input type="checkbox" id="menu-toggle" class="navbar-burger is-hidden">
-          <div class="nav-right nav-menu">
-            <a class="nav-item is-tab is-hidden-tablet">
-              <span class="icon"><i class="fas fa-home"></i></span> Home
-            </a>
-            <a class="nav-item is-tab is-hidden-tablet">
-              <span class="icon"><i class="fas fa-table"></i></span> Library
-            </a>
-            <a class="nav-item is-tab is-hidden-tablet">
-              <span class="icon"><i class="fas fa-info"></i></span> About
-            </a>
-            
-            <a class="nav-item is-tab is-active">
-              <span class="icon"><i class="fas fa-user"></i></span>
-            </a>
-            <a class="nav-item is-tab">
-              <span class="icon"><i class="fas fa-sign-out"></i></span>
-            </a>
+          <div class="nav-right nav-menu" style="max-height: 15rem; overflow-y: auto;">
+              <a class="nav-item is-tab is-hidden-tablet">
+                <span class="icon"><i class="fas fa-table"></i></span> Library
+              </a>
+            {% for song in songs %}
+              <a class="song nav-item is-tab is-hidden-tablet" data-id="{{ song.id }}" data-title="{{ song.title }}">
+                <span class="icon"><i class="fa fa-music"></i></span> {{ song.title }}
+              </a>
+            {% endfor %}
           </div>
         </div>
       </nav>
@@ -106,12 +109,12 @@
                         <i class="fas fa-music"></i>
                       </span>
                     </button>
-                    <label for="volume-control">
-                      <span class="icon is-small is-clickable">
-                        <i class="fas fa-volume-high"></i>
-                      </span>
-                    </label>
-                    <input type="range" id="volume-control" class="is-clickable" min="0" max="1" step="0.01" value="1">
+                    <div class="has-icons-left is-mobile"> 
+                        <span class="icon is-left"> 
+                            <i class="fa fa-volume-high"></i> 
+                        </span> 
+                        <input type="range" id="volume-control" class="is-clickable is-mobile" min="0" max="1" step="0.01" value="1">
+                    </div>
                   </div>
                 </div>
               </div>
@@ -119,9 +122,9 @@
               <div class="section" style="padding: 1rem;">
                 <input id="progress-bar" type="range" class="is-small is-clickable" value="0" min="0" max="100" step="0.01" style="margin-bottom: 0; width: 100%;">
                 <div>
-                  <div class="columns">
-                    <div class="column is-half has-text-left" id="current-time">0:00</div>
-                    <div class="column is-half has-text-right" id="total-time">0:00</div>
+                  <div class="columns is-mobile">
+                    <div class="column is-mobile is-half has-text-left" id="current-time">0:00</div>
+                    <div class="column is-mobile is-half has-text-right" id="total-time">0:00</div>
                   </div>
                 </div>
               </div>
