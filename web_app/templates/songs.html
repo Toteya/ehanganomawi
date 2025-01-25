@@ -50,7 +50,7 @@
             <!-- list of Songs -->
             {% for song in songs %}
               <li>
-                <a href="#" class="song" data-id="{{ song.id }}">
+                <a href="#" class="song" data-id="{{ song.id }}" data-title="{{ song.title }}">
                   <span class="icon is-small"><i class="fa fa-music"></i></span>
                   {{ song.title }}
                 </a>
@@ -83,7 +83,7 @@
           <div class="section">
             <!-- media player -->
             <div id="audio-player" class="box m-4">
-              <p class="mb-4">Press PLAY to learn the melody</p>
+              <p class="song-title mb-4">Press PLAY to learn the melody</p>
               <!-- audio sources -->
               <div style="display: none;">
                 <audio id="soprano" controls>
