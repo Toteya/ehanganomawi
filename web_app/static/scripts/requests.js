@@ -25,13 +25,21 @@ const getSongLyrics = async (song_id) => {
       contentType: 'application/json',
       success: (verses) => {
         $('div.lyrics').empty();
-        for (const verse of verses) {
-          const number = $('<h4></h4>');
-          const lyrics = $('<p></p>');
-          const linebreak = $('<br>');
-          number.text(`${verse.number}.`);
-          lyrics.text(verse.lyrics);
-          $('div.lyrics').append(number, lyrics, linebreak);
+        if (verses.length > 0) {
+          for (const verse of verses) {
+            const number = $('<h4></h4>');
+            const lyrics = $('<p></p>');
+            const linebreak = $('<br>');
+            number.text(`${verse.number}.`);
+            lyrics.text(verse.lyrics);
+            $('div.lyrics').append(number, lyrics, linebreak);
+          }
+        } else {
+          const line1 = $('<p></p>');
+          const line2 = $('<p></p>');
+          line1.text('Lyrics currently unvailable for this song.')
+          line2.text('Please try again later')
+          $('div.lyrics').append(line1, line2);
         }
         resolve(verses)
       },
