@@ -12,19 +12,10 @@
         <div class="container">
           <div class="nav-left">
             <div class="navbar-item">
-              <input input="text" class="navbar-search my-2" placeholder="Search">
-              </imput>
+              <input id="song-search" input="text" class="navbar-search my-2" placeholder="Search songs">
+              </input>
             </div>
-            <!-- <div id="composers" class="navbar-item has-dropdown">
-              <a  class="navbar-link field">Composers</a>
-              <div class="navbar-dropdown is-boxed">
-                {% for composer in composers %}
-                  <a class="navbar-item">
-                    {{ composer.name }}
-                  </a>
-                {% endfor %}
-              </div>
-            </div> -->
+
           </div>
           <label for="menu-toggle" class="nav-toggle">
             <span></span>
@@ -33,23 +24,29 @@
           </label>
           <input type="checkbox" id="menu-toggle" class="navbar-burger is-hidden">
           <div class="nav-right nav-menu" style="max-height: 15rem; overflow-y: auto;">
-              <a class="nav-item is-tab is-hidden-tablet">
-                <span class="icon"><i class="fas fa-table"></i></span> Library
-              </a>
-            {% for song in songs %}
-              <a class="song nav-item is-tab is-hidden-tablet" data-id="{{ song.id }}" data-title="{{ song.title }}">
-                <span class="icon"><i class="fa fa-music"></i></span> {{ song.title }}
-              </a>
-            {% endfor %}
+            <ul class="songs">
+              <li>
+                <a class="nav-item is-tab is-hidden-tablet">
+                  <span class="icon"><i class="fas fa-table"></i></span> Library
+                </a>
+              </li>
+              {% for song in songs %}
+                <li>
+                  <a class="song nav-item is-tab is-hidden-tablet" data-id="{{ song.id }}" data-title="{{ song.title }}">
+                    <span class="icon"><i class="fa fa-music"></i></span> {{ song.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
           </div>
         </div>
       </nav>
 
       <section class="columns is-fullheight">
         <!-- playlist sidebar -->
-        <aside class="column px-1 is-2 is-mobile is-fullheight section is-hidden-mobile">
+        <aside class="column px-1 is-2 is-mobile is-fullheight section is-hidden-mobile" style="overflow: auto;">
           <p class="menu-label">Playlist</p>
-          <ul class="menu-list">
+          <ul class="songs menu-list">
             <!-- list of Songs -->
             {% for song in songs %}
               <li>
