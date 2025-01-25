@@ -14,7 +14,6 @@ $(document).ready(() => {
   })
 
   if (isLoggedIn()) {
-    console.log('LOGGED IN!')
     $('#signup').hide();
     $('#login').hide();
     $('#logout').show();
