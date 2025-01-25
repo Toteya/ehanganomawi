@@ -8,45 +8,9 @@ $(document).ready(() => {
   let gainNodes;
   let sources = [];
   let startTime;
-  let offsetTime = 0;
-
-  function initAudioContext() {
-    offsetTime = 0;
-    const audioSources = [
-      $('#soprano').find('source'),
-      $('#alto').find('source'),
-      $('#tenor').find('source'),
-      $('#bass').find('source'),
-    ];
-
-    try {
-      audioContext = new (window.AudioContext || window.webkitAudioContext());
-    } catch (error) {
-      window.alert('Your browser does not support the Web Audio API.');
-    }
-
-    if (audioContext !== undefined) {
-      (async() => {
-        const paths = audioSources.map((audioSource) => audioSource.data('src'));
-        // fetch data for each audio source file
-        const dataBuffers = await Promise.all(
-          paths.map( (path) => fetch( path ).then( (res) => res.arrayBuffer() ) )
-        );
-        // create audio buffers / decode the audio data
-        audioBuffers = await Promise.all(
-          dataBuffers.map( (buf) => audioContext.decodeAudioData( buf ) )
-        );
-        // gain nodes to allow mute/unmute individual tracks
-        gainNodes = audioBuffers.map(() => audioContext.createGain());
-      })();
-      resetPlayerUI();
-      // The AudioContext will not be allowed to start at this stage.
-      // It will be resumed (or created) after a user gesture (when the play button is clicked).
-    }
-  }
+  let offsetTime;
 
   const playPause = $('#play-pause');
-
   const volumeControl = $('#volume-control');
   const progressBar = $('#progress-bar')[0];
   const currentTimeDisplay = $('#current-time')[0];
@@ -56,6 +20,47 @@ $(document).ready(() => {
   const muteAlto = $('#mute-alto')
   const muteTenor = $('#mute-tenor')
   const muteBass = $('#mute-bass')
+
+  const audioSources = [
+    $('#soprano').find('source'),
+    $('#alto').find('source'),
+    $('#tenor').find('source'),
+    $('#bass').find('source'),
+  ];
+
+  async function initAudioContext() {
+    return new Promise((resolve, reject) => {
+      try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext());
+      } catch (error) {
+        window.alert('Your browser does not support the Web Audio API.');
+      }
+
+      if (audioContext !== undefined) {
+        (async() => {
+          const paths = audioSources.map((audioSource) => audioSource.data('src'));
+          // fetch data for each audio source file
+          const dataBuffers = await Promise.all(
+            paths.map( (path) => fetch( path ).then( (res) => res.arrayBuffer() ) )
+          );
+          // create audio buffers / decode the audio data
+          audioBuffers = await Promise.all(
+            dataBuffers.map( (buf) => audioContext.decodeAudioData( buf ) )
+          );
+          // gain nodes to allow mute/unmute individual tracks
+          gainNodes = audioBuffers.map(() => audioContext.createGain());
+        })().then(() => {
+          offsetTime = 0;
+          startTime = audioContext.currentTime
+          resetPlayerUI();
+          resolve();
+        })
+      } else {
+        reject();
+      }
+    });
+  }
+
 
   const muteButtons = [muteSoprano, muteAlto, muteTenor, muteBass]
 
@@ -91,6 +96,7 @@ $(document).ready(() => {
         // remove source from array / clear the sources array
         sources = sources.filter(s => s !== source);
         resetPlayerUI();
+        // offsetTime = 0;  DO NOT UNCOMMENT THIS!!! It will break progress bar seeking
       })
       // start all audios after 0.5s just to be safe (to ensure they're in sync)
       source.start(currentTime + 0.5, offsetTime);
@@ -136,6 +142,9 @@ $(document).ready(() => {
     const currentSeconds = Math.floor(progressTime % 60);
     const totalMinutes = Math.floor(duration / 60);
     const totalSeconds = Math.floor(duration % 60);
+  
+    // console.log(`OFFSET: ${offsetTime}, START: ${startTime}`);
+    // console.log(`ACT: ${audioContext.currentTime}, PROGRESS: ${progressTime}`);
 
     setTimeDisplay(currentTimeDisplay, currentSeconds, currentMinutes);
     setTimeDisplay(totalTimeDisplay, totalSeconds, totalMinutes);
@@ -262,8 +271,20 @@ $(document).ready(() => {
         $('#alto').find('source').data('src', altoPath);
         $('#tenor').find('source').data('src', tenorPath);
         $('#bass').find('source').data('src', bassPath);
-        offsetTime = 0;
-        initAudioContext();
+
+        try {
+          const wasPlaying = audioContext.state == 'running';
+          sources.forEach((source) => source.stop());
+          audioContext.close().then(() => {
+            initAudioContext().then(() => {
+              if (wasPlaying) {
+                startPlayback();
+              }
+            })
+          })
+        } catch (TypeError) {
+          initAudioContext();
+        }
       })
     });
   });
