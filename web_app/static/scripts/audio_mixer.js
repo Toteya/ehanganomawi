@@ -303,4 +303,15 @@ $(document).ready(() => {
     });
   });
 
+  $("#song-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $(".songs li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+  });
+
+  // $('#composers').on('click', () => {
+  //   $('#composers-dropdown').toggleClass('is-active');
+  // })
+
 });
