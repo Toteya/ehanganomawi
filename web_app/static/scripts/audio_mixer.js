@@ -1,5 +1,5 @@
 // Handles the interactive functionality of the music player / songs page
-import { getSongMelody } from "../scripts/requests.js";
+import { getSongMelody, getSongLyrics } from "../scripts/requests.js";
 
 $(document).ready(() => {
   // Create audio context with Web Audio API to allow for audio manupulation
@@ -263,6 +263,8 @@ $(document).ready(() => {
     $(this).on('click', function(event) {
       event.preventDefault();
       const songID = $(this).data('id');
+      
+      getSongLyrics(songID);
 
       getSongMelody(songID).then((path) => {
         console.log('MELODY:', path);
