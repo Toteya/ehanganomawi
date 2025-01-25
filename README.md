@@ -26,10 +26,11 @@ This project has been created and submitted as a Portfolio Project for the ALX S
 - Python: Backend business logic
 - Flask, Flask-Login: Application, API, User session managment
 - MySQL, SQLAlchemy: Data persistence, Data management
+- PyTest, Unittest: For functional and unit testing of the API and models
 - HTML
 - Jvascript JQuery: Frontend scripting
 - Web Audio API: Audio control and manipulation
-- Bulma (CSS) - Frontend Styling
+- Bulma (CSS): Frontend Styling
 
 ## User Session
 
