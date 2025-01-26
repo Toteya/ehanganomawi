@@ -69,7 +69,7 @@ API Base URL: '/api/v1'
 ### General endpoints
 
 | Endpoint | Route               | Method | Role                                 |
-|:---------|:-------------------:|:------:|-------------------------------------:|
+|:---------|:--------------------|:------:|:-------------------------------------|
 | status   | `/status`          | `GET`  | Returns the current status of the API |
 | get_composers |  `/composers`  | `GET`  | Returns all the composers            |
 | get_melodies | `/melodies`     | `GET`  | Returns all the melodies             |
@@ -81,10 +81,10 @@ API Base URL: '/api/v1'
 | get_verses | `/songs/<song_id>` | `GET` | Returns the all the verses of the matching song |
 
 ### Admin endpoints
-These API endpoint are for admin functions; and will be setup not be accessible to general users.
+These API endpoints are for admin functions; and will be setup not to be accessible to general users.
 
 | Endpoint   | Route               | Method | Role                               |
-|:-----------|:-------------------:|:------:|-----------------------------------:|
+|:-----------|:--------------------|:------:|:-----------------------------------|
 | stats      | `/stats`     | `GET` | Returns a summary of all objects in the DB |
 | post_composer | `/composers`     | `POST` | Creates a new composer (name)      |
 | post_melody | `/melodies` | `POST` | Creates a new melody (filepath, composer_id) |
