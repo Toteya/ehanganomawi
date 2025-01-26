@@ -13,7 +13,7 @@ from models.verse import Verse
 @app_views.route('/verses/<verse_id>', methods=['GET'],
                  strict_slashes=False)
 def get_verse(verse_id):
-    """ Returns the matching the given criteria
+    """ Returns the verse matching the given id
     """
     verse = storage.get(Verse, verse_id)
     if not verse:
