@@ -87,12 +87,13 @@ These API endpoints are for admin functions; and will be setup not to be accessi
 |:-----------|:--------------------|:------:|:-----------------------------------|
 | stats      | `/stats`     | `GET` | Returns a summary of all objects in the DB |
 | post_composer | `/composers`     | `POST` | Creates a new composer (name)      |
-| post_melody | `/melodies` | `POST` | Creates a new melody (filepath, composer_id) |
+| post_melody | `/melodies` | `POST` | Creates a new melody (filepath, *composer_id) |
 | post_song_melodies | `/songs/<song_id>/melodies/<melody_id>` | `POST` | Adds a melody to a song |
-| post_song  | `/songs`            | `POST` | Creates a new song (title, number) |
+| post_song  | `/songs`            | `POST` | Creates a new song (title, *number) |
 | delete_verse | `/verses/<verse_id>` | `DELETE` | Deletes the matching verse    |
 | post_verse | `/verses`        | `POST` | Creates a new verse (song_id, lyrics) |
 
+(*)optional parameter - POST data
 
 ## Contributors
 
