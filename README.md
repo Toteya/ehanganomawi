@@ -68,16 +68,31 @@ API Base URL: '/api/v1'
 
 ### General endpoints
 
-| Endpoint |  Route   | Role |
-|:---------|:--------:|------:|
-| get_songs| `/songs` | Returns all the songs in the DB |
-| get_   |  `code`  |   $12 |
-| L2   | _italic_ |    $1 |
+| Endpoint | Route               | Method | Role                                 |
+|:---------|:-------------------:|:------:|-------------------------------------:|
+| status   | `/status`          | `GET`  | Returns the current status of the API |
+| get_composers |  `/composers`  | `GET`  | Returns all the composers            |
+| get_melodies | `/melodies`     | `GET`  | Returns all the melodies             |
+| get_melody | `/melodies/<melody_id>` | `GET` | Returns the matching melody     |
+| get_song_melodies | `/songs/<song_id>/melodies` | `GET` | returns all the melody linked to a song |
+| get_song |  `/songs/<song_id>` | `GET`  | Returns the song that matches the id |
+| get_songs | `/songs`           | `GET`  | Returns all the songs                |
+| get_verse | `/verses/<verse_id>` | `GET` | Returns the matching verse          |
+| get_verses | `/songs/<song_id>` | `GET` | Returns the all the verses of the matching song |
 
 ### Admin endpoints
 These API endpoint are reserved for admin purporses; involve access to and manipulation of sensitive or priveledged data, and will be setup not to be accessible to general users.
 
-* 
+| Endpoint   | Route               | Method | Role                               |
+|:-----------|:-------------------:|:------:|-----------------------------------:|
+| stats      | `/stats`     | `GET` | Returns a summary of all objects in the DB |
+| post_composer | `/composers`     | `POST` | Creates a new composer (name)      |
+| post_melody | `/melodies` | `POST` | Creates a new melody (filepath, composer_id) |
+| post_song_melodies | `/songs/<song_id>/melodies/<melody_id>` | `POST` | Adds a melody to a song |
+| post_song  | `/songs`            | `POST` | Creates a new song (title, number) |
+| delete_verse | `/verses/<verse_id>` | `DELETE` | Deletes the matching verse    |
+| post_verse | `/verses`        | `POST` | Creates a new verse (song_id, lyrics) |
+
 
 ## Contributors
 
