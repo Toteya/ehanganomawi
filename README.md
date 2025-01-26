@@ -81,7 +81,7 @@ API Base URL: '/api/v1'
 | get_verses | `/songs/<song_id>` | `GET` | Returns the all the verses of the matching song |
 
 ### Admin endpoints
-These API endpoint are reserved for admin purporses; involve access to and manipulation of sensitive or priveledged data, and will be setup not to be accessible to general users.
+These API endpoint are for admin functions; and will be setup not be accessible to general users.
 
 | Endpoint   | Route               | Method | Role                               |
 |:-----------|:-------------------:|:------:|-----------------------------------:|
