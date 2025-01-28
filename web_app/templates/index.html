@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-  OMAWI
-</h1>
-<h2 class="subtitle">
-  let's sing
-</h2>
+<div class="section">
+  <img src="{{ url_for('static', filename='assets/images/logo.png') }}" alt="" style="height: 15rem; width: auto;">
+  <h1 class="title">
+    OMAWI
+  </h1>
+  <h2 class="subtitle my-2">
+    let's sing
+  </h2>
+</div>
 {% endblock %}
