@@ -7,6 +7,7 @@ A database of popular choral songs, including a comprehensive collection of Oshi
 ## Table of Contents
 
 - [Background](#background)
+- [Installation](#installation)
 - [User Session](#user-session)
 - [Usage and Controls](#usage-and-controls)
 - [API](#api)
@@ -32,6 +33,26 @@ This project has been created and submitted as a Portfolio Project for the ALX S
 - Jvascript JQuery: Frontend scripting
 - Web Audio API: Audio rendering, control and manipulation
 - Bulma (CSS): Frontend Styling
+
+## Installation
+Python version 3.10
+
+#### Install the required Python libraries:
+* Flask (3.1.0) and Flask-Login (0.6.3):
+`pip install flask flask-login`
+
+* SQLAlchemy (2.0.20):
+`pip install SQLAlchemy`
+
+#### Run MySQL dump:
+`bash restore_dev_db.sh`
+
+#### Start the Flask API and Web Application Server (Dev):
+`bash start_api.sh`
+`bash start_web_app.sh`
+
+#### Browse:
+http://localhost:5000
 
 ## User Session
 
