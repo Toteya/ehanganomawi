@@ -7,8 +7,7 @@ A database of popular choral songs, including a comprehensive collection of Oshi
 ## Table of Contents
 
 - [Background](#background)
-- [Installation](#installation)
-- [User Session](#user-session)
+- [Setup](#setup)
 - [Usage and Controls](#usage-and-controls)
 - [API](#api)
 - [Contributors](#contributors)
@@ -34,7 +33,7 @@ This project has been created and submitted as a Portfolio Project for the ALX S
 - Web Audio API: Audio rendering, control and manipulation
 - Bulma (CSS): Frontend Styling
 
-## Installation
+## Setup
 Python version 3.10
 
 #### Install the required Python libraries:
@@ -54,17 +53,15 @@ Python version 3.10
 #### Browse:
 http://localhost:5000
 
-## User Session
+## Usage and Controls
 
 The user is required to login to access the application.
-
-## Usage and Controls
 
 Once logged in, go to the songs page to access the songs and the music player.
 
 Select any song from the `SONGS LIST` on the left sidebar (or menu on mobile).
 
-The lyrics of the song will appear on the screen.
+The lyrics of the song will appear at the bottom of the screen.
 
 Press the `PLAY` button to listen to the melody of the song.
 
