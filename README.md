@@ -37,10 +37,10 @@ This project has been created and submitted as a Portfolio Project for the ALX S
 Python version 3.10
 
 #### Install the required Python libraries:
-* Flask (3.1.0) and Flask-Login (0.6.3):
+- Flask (3.1.0) and Flask-Login (0.6.3):
 `pip install flask flask-login`
 
-* SQLAlchemy (2.0.20):
+- SQLAlchemy (2.0.20):
 `pip install SQLAlchemy`
 
 #### Run MySQL dump:
@@ -48,6 +48,7 @@ Python version 3.10
 
 #### Start the Flask API and Web Application Server (Dev):
 `bash start_api.sh`
+
 `bash start_web_app.sh`
 
 #### Browse:
