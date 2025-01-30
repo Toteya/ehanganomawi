@@ -83,34 +83,32 @@ Select the buttons `SOPRANO`, `ALTO`, `TENOR`, and `BASS` to mute or unmute a sp
 
 ## API
 
-API Base URL: '/api/v1'
+### Public endpoints
 
-### General endpoints
+| Endpoint                                 | Role                                     |
+|:-----------------------------------------|:-----------------------------------------|
+| `GET** /api/v1/status`                   | Returns the current status of the API    |
+| `GET** /api/v1/composers`                | Returns all the composers                |
+| `GET** /api/v1/melodies`                 | Returns all the melodies                 |
+| `GET** /api/v1/melodies/<melody_id>`     | Returns the matching melody              |
+| `GET** /api/v1/songs/<song_id>/melodies` | Returns all the melody linked to a song  |
+| `GET** /api/v1/songs/<song_id>`          | Returns the song that matches the id     |
+| `GET** /api/v1/songs`                    | Returns all the songs                    |
+| `GET** /api/v1/verses/<verse_id>`        | Returns the matching verse               |
+| `GET** /api/v1/songs/<song_id>`   | Returns the all the verses of the matching song |
 
-| Endpoint | Route               | Method | Role                                 |
-|:---------|:--------------------|:------:|:-------------------------------------|
-| status   | `/status`          | `GET`  | Returns the current status of the API |
-| get_composers |  `/composers`  | `GET`  | Returns all the composers            |
-| get_melodies | `/melodies`     | `GET`  | Returns all the melodies             |
-| get_melody | `/melodies/<melody_id>` | `GET` | Returns the matching melody     |
-| get_song_melodies | `/songs/<song_id>/melodies` | `GET` | returns all the melody linked to a song |
-| get_song |  `/songs/<song_id>` | `GET`  | Returns the song that matches the id |
-| get_songs | `/songs`           | `GET`  | Returns all the songs                |
-| get_verse | `/verses/<verse_id>` | `GET` | Returns the matching verse          |
-| get_verses | `/songs/<song_id>` | `GET` | Returns the all the verses of the matching song |
-
-### Admin endpoints
+### Admin (private) endpoints
 These API endpoints are for admin functions; and will be setup not to be accessible to general users.
 
-| Endpoint   | Route               | Method | Role                               |
-|:-----------|:--------------------|:------:|:-----------------------------------|
-| stats      | `/stats`     | `GET` | Returns a summary of all objects in the DB |
-| post_composer | `/composers`     | `POST` | Creates a new composer (name)      |
-| post_melody | `/melodies` | `POST` | Creates a new melody (filepath, *composer_id) |
-| post_song_melodies | `/songs/<song_id>/melodies/<melody_id>` | `POST` | Adds a melody to a song |
-| post_song  | `/songs`            | `POST` | Creates a new song (title, *number) |
-| delete_verse | `/verses/<verse_id>` | `DELETE` | Deletes the matching verse    |
-| post_verse | `/verses`        | `POST` | Creates a new verse (song_id, lyrics) |
+| Endpoint                       | Role                                           |
+|:-------------------------------|:-----------------------------------------------|
+| `GET** /api/v1/stats`          | Returns a summary of all objects in the DB     |
+| `POST** /api/v1/composers`     | Creates a new composer (name)                  |
+| `POST** /api/v1/melodies`      | Creates a new melody (filepath, *composer_id)  |
+| `POST** /api/v1/songs/<song_id>/melodies/<melody_id>` | Adds a melody to a song |
+| `POST** /api/v1/songs`         | Creates a new song (title, *number)            |
+| `DELETE** /api/v1/verses/<verse_id>` | Deletes the matching verse               |
+| `POST** /api/v1/verses`        | Creates a new verse (song_id, lyrics)          |
 
 (*)optional parameter - POST data
 
