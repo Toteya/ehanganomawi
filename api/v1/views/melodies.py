@@ -86,6 +86,6 @@ def post_song_melodies(song_id, melody_id):
         abort(400, description='That melody has already been added to this song')
 
     song.melodies.append(melody)
-    storage.save()
+    song.update() # updates and saves db session
     storage.close()
     return jsonify(song.to_dict()), 201
