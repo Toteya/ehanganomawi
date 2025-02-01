@@ -50,13 +50,14 @@ class BaseModel:
                     continue
                 if hasattr(self, key):
                     setattr(self, key, value)
-            # if kwargs.get('password') and isinstance(self.password, str):
-            #     try:
+            # password hashing to be handled by session manager
 
     def update(self):
-        """ Updates the updated_at attribute
+        """ Updates the updated_at attribute and saves the current DB session
         """
+        from models import storage
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """ Returns a dictionary representation of the BaseModel instance
