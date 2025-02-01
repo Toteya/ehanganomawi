@@ -29,6 +29,20 @@ def test_get_composers(client, create_composers):
     assert response.status_code == 200
     assert len(response.json) == 1
 
+
+def test_get_composer(client, create_composers):
+    """ Tests that the correct composer matching the ID is returned
+    """
+    # Get request with existing ID -> SUCCESS
+    response = client.get('api/v1/composers/a6458a37-8b17')
+    assert response.status_code == 200
+    assert response.json.get('name') == 'Sibelius'
+
+    # Get request with non-existing ID -> 404 Error
+    response = client.get('api/v1/composers/fake_id')
+    assert response.status_code == 404
+
+
 def test_post_composer(client, create_composers):
     """ Tests that the endpoint correctly creates a new composer object
     """
