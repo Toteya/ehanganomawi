@@ -36,12 +36,8 @@ This project has been created and submitted as a Portfolio Project for the ALX S
 ## Setup
 Python version 3.10
 
-#### Install the required Python libraries:
-- Flask (3.1.0) and Flask-Login (0.6.3):
-`pip install flask flask-login`
-
-- SQLAlchemy (2.0.20):
-`pip install SQLAlchemy`
+#### Install the requisite dependencies:
+`pip install -r requirements.txt`
 
 #### Run MySQL dump:
 `bash restore_dev_db.sh`
