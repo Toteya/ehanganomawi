@@ -50,8 +50,65 @@ const getSongLyrics = async (song_id) => {
       error: (error) => {
         reject(error);
       },
-    })
-  })
+    });
+  });
 }
 
-export { getSongMelody, getSongLyrics };
+const filterSongsByComposer = (composer_id) => {
+  let url;
+  if (composer_id === undefined) {
+    url = `http://127.0.0.1:5001/api/v1/songs`;
+  } else {
+    url = `http://127.0.0.1:5001/api/v1/composers/${composer_id}/songs`;
+  }
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: 'GET',
+      url: url,
+      contentType: 'application/json',
+      success: (songs) => {
+        const listNav = $('#nav-songlist');
+        const listSide = $('#side-songlist');
+        for (const list of [listNav, listSide]) {
+          list.empty();
+          if (songs.length > 0) {
+            for (const song of songs) {
+              const listItem = $('<li></li>');
+              let anchor;
+              if (list.hasClass('menu-list')) {
+                anchor = $('<a class="song"></a>');
+              } else {
+                anchor = $('<a class="song nav-item is-tab is-hidden-tablet"></a>');
+              }
+              const span = $('<span class="icon is-small"></span>');
+              const icon = $('<i class="fa fa-music"></i>');
+              span.append(icon);
+              anchor.data('id', song.id);
+              anchor.data('title', song.title);
+              anchor.append(span);
+              anchor.text(song.title);
+              listItem.append(anchor);
+              list.append(listItem);
+            }
+          } else {
+              const p = $('<p></p>');
+              const line = $('<em></em>');
+              line.text('No matches');
+              p.append(line);
+              list.append(p);
+          }
+        }
+        resolve(songs)
+      },
+      error: (error) => {
+        reject(error)
+      },
+    });
+  });
+}
+
+export {
+  getSongMelody,
+  getSongLyrics,
+  filterSongsByComposer,
+};
