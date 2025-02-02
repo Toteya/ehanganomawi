@@ -71,9 +71,9 @@ def get_song_melodies(song_id):
 
 
 
-@app_views.route('/songs/<song_id>/melodies/<melody_id>', methods=['POST'],
+@app_views.route('/songs/<song_id>/melodies/<melody_id>', methods=['PUT'],
                  strict_slashes=False)
-def post_song_melodies(song_id, melody_id):
+def put_song_melodies(song_id, melody_id):
     """ Adds the given melody to the given song
     """
     melody = storage.get(Melody, melody_id)
@@ -88,4 +88,4 @@ def post_song_melodies(song_id, melody_id):
     song.melodies.append(melody)
     song.update() # updates and saves db session
     storage.close()
-    return jsonify(song.to_dict()), 201
+    return jsonify(song.to_dict()), 200
