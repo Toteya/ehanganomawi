@@ -51,7 +51,7 @@ def post_song():
         storage.close()
         abort(400, description="Song title already exists.")
     storage.close()
-    return jsonify(song.to_dict())
+    return jsonify(song.to_dict()), 201
 
 
 # @app_views.route('composer/<composer_id>/songs', methods=['GET'],
