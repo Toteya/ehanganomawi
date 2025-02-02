@@ -90,8 +90,6 @@ class DBStorage:
         """ Performs a join query using the given classes and returns a list of
         objects matching the given filter(s)
         """
-        key = list(filters.keys())[0]
-        value = filters[key]
         stmt = (
             select(clss_from)
             .select_from(clss_from)
