@@ -16,6 +16,21 @@
               </input>
             </div>
 
+            <!-- Composers filter dropdown  -->
+            <div class="navbar-item">
+              <div class="control">
+                <div class="select is-small my-1">
+                  <select id="select-composer">
+                    <option class="composer"> All Composers</option>
+                    {% for composer in composers %}
+                      <option class="composer" data-id="{{ composer.id }}">{{ composer.name }}</option>
+                    {% endfor %}
+                    <!-- <option>With options</option> -->
+                  </select>
+                </div>
+              </div>
+            </div>
+
           </div>
           <label for="menu-toggle" class="nav-toggle">
             <span></span>
@@ -24,7 +39,7 @@
           </label>
           <input type="checkbox" id="menu-toggle" class="navbar-burger is-hidden">
           <div class="nav-right nav-menu" style="max-height: 15rem; overflow-y: auto;">
-            <ul class="songs">
+            <ul id="nav-songlist" class="songs">
               <li>
                 <a class="nav-item is-tab is-hidden-tablet">
                   <span class="icon"><i class="fas fa-table"></i></span> Library
@@ -46,7 +61,7 @@
         <!-- playlist sidebar -->
         <aside class="column px-1 is-2 is-mobile is-fullheight section is-hidden-mobile" style="overflow: auto;">
           <p class="menu-label">Playlist</p>
-          <ul class="songs menu-list">
+          <ul id="side-songlist" class="songs menu-list">
             <!-- list of Songs -->
             {% for song in songs %}
               <li>
@@ -72,7 +87,7 @@
           <div class="section">
             <!-- media player -->
             <div id="audio-player" class="box m-4">
-              <p class="song-title mb-4">Select a song to learn the melody</p>
+              <p class="song-title mb-4">Select a song to hear the melody</p>
               <!-- audio sources -->
               <div style="display: none;">
                 <audio id="soprano" controls>
