@@ -44,7 +44,7 @@ def test_post_song(client, create_songs):
     # Post song correctly with all details -> SUCCESS
     data = {'title': 'Song 81', 'number': 81}
     response = client.post('/api/v1/songs', data=data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert storage.get_by_filter(Song, title='Song 81') is not None
 
     # Post a song with a missing title -> 404 Error
