@@ -98,14 +98,14 @@ def test_post_melody(client, create_composers, create_melodies):
     assert response.status_code == 400
 
 
-def test_post_song_melodies(client, create_songs, create_melodies):
+def test_put_song_melodies(client, create_songs, create_melodies):
     """ Tests that the endpoint correctly adds a melody to a song
     """
     # POST existing song and existing melody -> SUCCESS
     song_id = '93016e68-8e7e'
     melody_id = 'df7943f3-2759'
-    response = client.post(f'/api/v1/songs/{song_id}/melodies/{melody_id}')
-    assert response.status_code == 201
+    response = client.put(f'/api/v1/songs/{song_id}/melodies/{melody_id}')
+    assert response.status_code == 200
     song = storage.get(Song, song_id)
     melody_filepaths = [melody.filepath for melody in song.melodies]
     assert 'sweet_melody.m4a' in melody_filepaths
@@ -113,7 +113,6 @@ def test_post_song_melodies(client, create_songs, create_melodies):
     # POST existing song and non-exsitent melody -> 404 Error
     # POST existing melody and non-exsitent song-> 404 Error
     # POST melody to a song that already has that same melody -> 400 Error
-
 
 
 def test_get_song_melodies(client, create_songs, create_melodies):
