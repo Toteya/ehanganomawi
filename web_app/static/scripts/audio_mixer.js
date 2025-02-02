@@ -1,5 +1,9 @@
 // Handles the interactive functionality of the music player / songs page
-import { getSongMelody, getSongLyrics } from "../scripts/requests.js";
+import {
+  getSongMelody,
+  getSongLyrics,
+  filterSongsByComposer,
+} from "../scripts/requests.js";
 
 $(document).ready(() => {
   // Create audio context with Web Audio API to allow for audio manupulation
@@ -258,60 +262,59 @@ $(document).ready(() => {
     });
   });
 
-  // selecting and changing songs
-  $('.song').each(function() {
-    $(this).on('click', function(event) {
-      event.preventDefault();
-      const songID = $(this).data('id');
-      const songTitle = $(this).data('title');
-      $('p.song-title').text(songTitle);
-      
-      getSongLyrics(songID);
+  // Attach eventlistener to all items (songs) in the list
+  $('.songs').on('click', '.song', function(event) {
+    event.preventDefault();
+    const songID = $(this).data('id');
+    const songTitle = $(this).data('title');
+    $('p.song-title').text(songTitle);
+    
+    getSongLyrics(songID);
 
-      getSongMelody(songID).then((path) => {
-        console.log('MELODY:', path);
-        const sopranoPath = `../static/assets/audio/${path}/soprano.m4a`;
-        const altoPath = `../static/assets/audio/${path}/alto.m4a`;
-        const tenorPath = `../static/assets/audio/${path}/tenor.m4a`;
-        const bassPath = `../static/assets/audio/${path}/bass.m4a`;
+    getSongMelody(songID).then((path) => {
+      console.log('MELODY:', path);
+      const sopranoPath = `../static/assets/audio/${path}/soprano.m4a`;
+      const altoPath = `../static/assets/audio/${path}/alto.m4a`;
+      const tenorPath = `../static/assets/audio/${path}/tenor.m4a`;
+      const bassPath = `../static/assets/audio/${path}/bass.m4a`;
 
-        $('#soprano').find('source').data('src', sopranoPath);
-        $('#alto').find('source').data('src', altoPath);
-        $('#tenor').find('source').data('src', tenorPath);
-        $('#bass').find('source').data('src', bassPath);
+      $('#soprano').find('source').data('src', sopranoPath);
+      $('#alto').find('source').data('src', altoPath);
+      $('#tenor').find('source').data('src', tenorPath);
+      $('#bass').find('source').data('src', bassPath);
 
-        try {
-          const wasPlaying = audioContext.state == 'running';
-          sources.forEach((source) => {
-            source.stop()
-            sources = sources.filter(s => s !== source);
-          });
-          audioContext.close().then(() => {
-            initAudioContext().then(() => {
-              if (wasPlaying) {
-                startPlayback();
-                const icon = playPause.find('i');
-                icon.removeClass('fa-play');
-                icon.addClass('fa-pause');
-              }
-            })
+      try {
+        const wasPlaying = audioContext.state == 'running';
+        sources.forEach((source) => {
+          source.stop()
+          sources = sources.filter(s => s !== source);
+        });
+        audioContext.close().then(() => {
+          initAudioContext().then(() => {
+            if (wasPlaying) {
+              startPlayback();
+              const icon = playPause.find('i');
+              icon.removeClass('fa-play');
+              icon.addClass('fa-pause');
+            }
           })
-        } catch (TypeError) {
-          initAudioContext();
-        }
-      })
-    });
+        })
+      } catch (TypeError) {
+        initAudioContext();
+      }
+    })
   });
 
-  $("#song-search").on("keyup", function() {
+  $('#song-search').on('keyup', function() {
     var value = $(this).val().toLowerCase();
-    $(".songs li").filter(function() {
+    $('.songs li').filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
     });
   });
 
-  // $('#composers').on('click', () => {
-  //   $('#composers-dropdown').toggleClass('is-active');
-  // })
+  $('#select-composer').on('change', function() {
+    const composer_id = $(this).find('option:selected').data('id');
+    filterSongsByComposer(composer_id);
+  })
 
 });
