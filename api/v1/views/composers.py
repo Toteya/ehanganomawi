@@ -3,14 +3,14 @@
 module composers:
 Contains API endpoints related to composer objects
 """
-from api.v1.views import app_views
 from flask import abort, jsonify, request
+from sqlalchemy.exc import IntegrityError
+from api.v1.views import app_views
 from models import storage
 from models.composer import Composer
-from sqlalchemy.exc import IntegrityError
 
 
-@app_views.route('/composers', strict_slashes=False)
+@app_views.route('/composers', methods=['GET'], strict_slashes=False)
 def get_composers():
     """ Returns all the composers in the database
     """
@@ -18,7 +18,8 @@ def get_composers():
     composers_list = [composer.to_dict() for composer in composers]
     return jsonify(composers_list)
 
-@app_views.route('/composers/<composer_id>')
+@app_views.route('/composers/<composer_id>', methods=['GET'],
+                 strict_slashes=False)
 def get_composer(composer_id):
     """ Returns the composer matching the given ID
     """
