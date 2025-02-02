@@ -10,7 +10,7 @@ from models.melody import Melody
 from models.user import User
 from models.verse import Verse
 from os import environ
-from sqlalchemy import create_engine
+from sqlalchemy import and_, create_engine, select
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import InvalidRequestError
 
@@ -69,12 +69,39 @@ class DBStorage:
         return obj
 
     def get_by_filter(self, clss=None, **kwargs):
-        """ Return the first object that matches the given class and arguments
+        """ Returns the first object that matches the given class and arguments
         """
         if clss.__name__ not in self.__classes:
             return None
         obj = self.__session.query(clss).filter_by(**kwargs).first()
         return obj
+    
+    def get_all_by_filter(self, clss=None, **kwargs):
+        """ Returns all the object
+        """
+        if clss.__name__ not in self.__classes:
+            return None
+        objs = self.__session.query(clss).filter_by(**kwargs).all()
+        return objs
+
+
+    def get_join(self, clss_from=None, clss_join=None, relationship=None,
+                 **filters):
+        """ Performs a join query using the given classes and returns a list of
+        objects matching the given filter(s)
+        """
+        key = list(filters.keys())[0]
+        value = filters[key]
+        stmt = (
+            select(clss_from)
+            .select_from(clss_from)
+            .join(clss_join, relationship)
+        )
+        for key, value in filters.items():
+            stmt = stmt.where(getattr(clss_join, key) == value)
+
+        objs = self.__session.execute(stmt).scalars()
+        return objs
 
     def new(self, obj):
         """ Adds a new object to the current session
