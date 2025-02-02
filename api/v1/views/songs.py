@@ -3,11 +3,12 @@
 module songs:
 Contains API endpoints related to song objects
 """
-from api.v1.views import app_views
 from flask import abort, jsonify, request
-from models import storage
-from models.song import Song
 from sqlalchemy.exc import IntegrityError
+from api.v1.views import app_views
+from models.melody import Melody
+from models.song import Song
+from models import storage
 
 
 @app_views.route('/songs', methods=['GET'], strict_slashes=False)
@@ -54,8 +55,11 @@ def post_song():
     return jsonify(song.to_dict()), 201
 
 
-# @app_views.route('composer/<composer_id>/songs', methods=['GET'],
-#                  strict_slashes=False)
-# def get_songs_by_composer(composer_id):
-#     """ Returns all the songs that match the given composer
-#     """
+@app_views.route('/composers/<composer_id>/songs', methods=['GET'],
+                 strict_slashes=False)
+def get_songs_by_composer(composer_id):
+    """ Returns all the songs whose melody's composer matches the given ID
+    """
+    songs = storage.get_join(Song, Melody, Song.melodies, composer_id=composer_id)
+    songs_list = [song.to_dict() for song in songs]
+    return jsonify(songs_list)
