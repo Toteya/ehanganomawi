@@ -45,4 +45,4 @@ def post_composer():
         abort(400, description="Composer's name already exists.")
     storage.close()
 
-    return jsonify(composer.to_dict())
+    return jsonify(composer.to_dict()), 201

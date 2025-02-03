@@ -49,7 +49,7 @@ def test_post_composer(client, create_composers):
     # Post a composer with correct data -> SUCCESS
     data = {'name': 'Vivaldi'}
     response = client.post('/api/v1/composers', data=data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert storage.get_by_filter(Composer, name='Vivaldi')
 
     # Post a composer missing a name -> 400 Error
