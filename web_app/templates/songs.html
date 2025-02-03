@@ -11,12 +11,12 @@
       <nav class="nav has-shadow">
         <div class="container">
           <div class="nav-left">
+            <!-- search bar -->
             <div class="navbar-item">
-              <input id="song-search" input="text" class="navbar-search my-2" placeholder="Search songs">
-              </input>
+              <input class="input is-small my-1" type="text" id="song-search" input="text" placeholder="Search songs">
             </div>
 
-            <!-- Composers filter dropdown  -->
+            <!-- composers filter dropdown  -->
             <div class="navbar-item">
               <div class="control">
                 <div class="select is-small my-1">
@@ -25,7 +25,6 @@
                     {% for composer in composers %}
                       <option class="composer" data-id="{{ composer.id }}">{{ composer.name }}</option>
                     {% endfor %}
-                    <!-- <option>With options</option> -->
                   </select>
                 </div>
               </div>
