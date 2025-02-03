@@ -67,7 +67,7 @@ def test_post_verse(client, create_songs, create_verses):
                                'number': '1',
                                'lyrics': 'Lorem ipsum dolor sit amet.'
                            })
-    assert response.status_code == 200
+    assert response.status_code == 201
     song = storage.get(Song, '43870a5d-cbd0')
     assert 'Lorem ipsum dolor sit amet.' in song.verses[0].lyrics
 
