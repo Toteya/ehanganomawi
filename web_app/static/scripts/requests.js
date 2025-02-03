@@ -75,7 +75,7 @@ const filterSongsByComposer = (composer_id) => {
             for (const song of songs) {
               const listItem = $('<li></li>');
               let anchor;
-              if (list.hasClass('menu-list')) {
+              if (list.attr('id') === 'side-songlist') {
                 anchor = $('<a class="song"></a>');
               } else {
                 anchor = $('<a class="song nav-item is-tab is-hidden-tablet"></a>');
