@@ -17,6 +17,7 @@ def get_songs():
     """
     songs = storage.all(Song).values()
     songs_list = [song.to_dict() for song in songs]
+    songs_list = sorted(songs_list, key=lambda k: k['title'])
     return jsonify(songs_list)
 
 
@@ -62,4 +63,5 @@ def get_songs_by_composer(composer_id):
     """
     songs = storage.get_join(Song, Melody, Song.melodies, composer_id=composer_id)
     songs_list = [song.to_dict() for song in songs]
+    songs_list = sorted(songs_list, key=lambda k: k['title'])
     return jsonify(songs_list)
