@@ -53,7 +53,7 @@ def post_melody():
         storage.close()
         abort(400, description=f"A melody already exists with that filepath {filepath}.")
     storage.close()
-    return jsonify(melody.to_dict())
+    return jsonify(melody.to_dict()), 201
 
 
 @app_views.route('/songs/<song_id>/melodies', methods=['GET'],
