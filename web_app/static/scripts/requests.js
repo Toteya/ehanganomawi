@@ -8,7 +8,11 @@ const getSongMelody = async (song_id) => {
       contentType: 'application/json',
       success: (melodies) => {
         // TO BE UPDATED: For now just return the first melody object in the array
-        resolve(melodies[0].filepath);
+        try {
+          resolve(melodies[0].filepath);
+        } catch (TypeError) {
+          throw new Error('Melody not found');
+        }
       },
       error: (error) => {
         reject(error);
